@@ -41,12 +41,15 @@ ol, ul {
   background: #ddd;
 }
 
-.game {
+.scram {
   display: flex;
   flex-direction: row;
 }
 
-.game-info {
+.scram-info {
   margin-left: 20px;
 }
 
+.color-picker {
+  margin-right: 20px;
+}

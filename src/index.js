@@ -73,7 +73,7 @@ class ColorPicker extends React.Component {
   }
 }
 
-class Game extends React.Component {
+class Scramboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -98,12 +98,14 @@ class Game extends React.Component {
     let status = "Scramboard";
 
     return (
-      <div className="game">
-        <ColorPicker onColorChangeComplete={ this.handleColorChangeComplete }/>
-        <div className="game-board">
+      <div className="scram">
+        <div className="color-picker">
+          <ColorPicker onColorChangeComplete={ this.handleColorChangeComplete }/>
+        </div>
+        <div className="scram-board">
           <Board currentColor={this.state.color}/>
         </div>
-        <div className="game-info">
+        <div className="scram-info">
           <div>{status}</div>
         </div>
       </div>
@@ -114,6 +116,6 @@ class Game extends React.Component {
 // ========================================
 
 ReactDOM.render(
-  <Game />,
+  <Scramboard/>,
   document.getElementById('root')
 );
