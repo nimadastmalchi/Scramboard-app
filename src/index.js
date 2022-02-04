@@ -18,13 +18,13 @@ class Board extends React.Component {
     super(props);
 
     this.state = {
-      pixels : Array.from(Array(num_rows), () => Array(num_cols).fill('#ffffff')),
+      pixels : Array.from(Array(num_rows), () => Array(num_cols).fill('#ffffff')), // initially white
     };
   }
 
   handleClick(i, j) {
-    this.state.pixels[i][j] = this.props.currentColor;
-    this.setState({});
+    this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
+    this.setState({}); // re-render
   }
 
   renderPixel(i, j) {
@@ -66,7 +66,7 @@ class ColorPicker extends React.Component {
         onChangeComplete={ (color) => {
           this.state.background = color;
           this.setState({});
-          this.props.onColorChangeComplete(color);
+          this.props.onColorChangeComplete(color); // this function is passed down from Scramboard
         }}
       />
     );
@@ -77,17 +77,14 @@ class Scramboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stepNumber : 0,
       color : '#ffffff',
     };
   }
 
-  jumpTo(step) {
-     this.setState({
-       stepNumber : step,
-     });
-  }
-
+  // Once a color change is complete, this function is called.
+  // It sets the color prop of Scramboard, which is then passed down
+  // to the Board component, then the Pixel componenet. Every time
+  // a pixel button is clicked, its color is changed to this.state.color.
   handleColorChangeComplete = (color) => {
     this.setState({
       color : color.hex,
