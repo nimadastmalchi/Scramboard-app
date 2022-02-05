@@ -94,6 +94,24 @@ class Scramboard extends React.Component {
   render() {
     let status = "Scramboard";
 
+    function App() {
+      const [data, setData] = React.useState(null);
+
+      React.useEffect(() => {
+        fetch("http://localhost:3001/api")
+          .then((res) => res.json())
+          .then((data) => setData(data.message));
+      }, []);
+
+      return (
+        <div className="App">
+          <header className="App-header">
+            <p>{!data ? "Loading..." : data}</p>
+          </header>
+        </div>
+      );
+    }
+
     return (
       <div className="scram">
         <div className="color-picker">
@@ -104,6 +122,7 @@ class Scramboard extends React.Component {
         </div>
         <div className="scram-info">
           <div>{status}</div>
+          <App/>
         </div>
       </div>
     );
