@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { SketchPicker, SliderPicker } from 'react-color';
+import { SketchPicker } from 'react-color';
 
 // dimensions of the board
 const num_rows = 50;
@@ -64,8 +64,9 @@ class ColorPicker extends React.Component {
       <SketchPicker
         color={ this.state.background }
         onChangeComplete={ (color) => {
-          this.state.background = color;
-          this.setState({});
+          this.setState({
+            background : color,
+          });
           this.props.onColorChangeComplete(color); // this function is passed down from Scramboard
         }}
       />
