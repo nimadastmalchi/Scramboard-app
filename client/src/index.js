@@ -106,7 +106,7 @@ class Scramboard extends React.Component {
       return (
         <div className="App">
           <header className="App-header">
-            <p>{!data ? "Loading..." : data}</p>
+            <p>{!data ? "Connecting to the server..." : data}</p>
           </header>
         </div>
       );
