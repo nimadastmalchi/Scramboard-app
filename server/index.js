@@ -17,17 +17,21 @@ var ref = db.ref("hello/");
 
 const app = express();
 
+const NUM_ROWS = 50;
+const NUM_COLS = 50;
 console.log(db.ref('pixels/').get().then((data) => {
   val = data.val();
   console.log(val);
   if (val === 0) {
-    pixels = Array.from(Array(50), () => Array(50).fill('#ffffff'));
-    for (let i = 0; i < 50; ++i) {
-      for (let j = 0; j < 50; ++j) {
+    pixels = Array.from(Array(NUM_ROWS), () => Array(NUM_COLS).fill('#ffffff'));
+    for (let i = 0; i < NUM_ROWS; ++i) {
+      for (let j = 0; j < NUM_COLS; ++j) {
         pixels[i][j] = "#fff";
       }
     }
     db.ref('pixels/').set({
+      num_rows: NUM_ROWS,
+      num_cols: NUM_COLS,
       array: pixels,
     });
   }
