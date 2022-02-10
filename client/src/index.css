@@ -42,19 +42,21 @@ ol, ul {
   background: #ddd;
 }
 
-.game {
- 
+.scram {
   width:100%;
   display: flex;
   justify-content: space-between;
 }
-.game-div{
+
+.scram-div{
   display: flex;
   flex-direction: row;
 }
-.game-info {
+
+.scram-info {
   margin-left: 20px;
 }
+
 .profile{
   direction: 'row-reverse';
   width:10%;

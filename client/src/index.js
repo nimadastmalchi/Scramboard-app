@@ -95,10 +95,7 @@ class Scramboard extends React.Component {
     });
   }
 
-
   render() {
-    let status = "Scramboard";
-
     function App() {
       const [data, setData] = React.useState(null);
 
@@ -116,6 +113,7 @@ class Scramboard extends React.Component {
         </div>
       );
     }
+
     function handleSubmit()
     {
       fetch('http://localhost:3001/api', {
@@ -128,37 +126,26 @@ class Scramboard extends React.Component {
             "password": "b"
           }
         }),
-      }).then((data) => data.json()).catch((error) => console.log(error))
+      }).then((data) => data.json()).catch((error) => console.log(error));
     };
-
 
     return (
       <div>
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand href="#home">
-              <img
-                alt=""
-                src={logo}
-                width="30"
-                height="30"
-                className="d-inline-block align-top"
-              />{' '}
-              React Bootstrap
+              Scramboard 
             </Navbar.Brand>
           </Container>
         </Navbar>
-        <div className="game">
-          <div className="game-div">
+        <div className="scram">
+          <div className="scram-div">
             <ColorPicker onColorChangeComplete={this.handleColorChangeComplete} />
-            <div className="game-board">
+            <div className="scram-board">
               <Board currentColor={this.state.color} />
             </div>
-            <div className="game-info">
-              <div>{status}</div>
-            </div>
           </div>
-          <App />
+          <App/>
           <div className="profile">
             <p>player's information</p>
             <button
@@ -166,10 +153,8 @@ class Scramboard extends React.Component {
               submit
             </button>
           </div>
-
         </div>
       </div>
-
     );
   }
 }

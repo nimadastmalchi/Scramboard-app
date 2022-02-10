@@ -7,7 +7,6 @@ var admin = require("firebase-admin");
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  
   databaseURL: "https://scramboard-default-rtdb.firebaseio.com/"
 });
 
@@ -24,25 +23,26 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
 const cors = require("cors");
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 }
-app.use(cors(corsOptions)) // Use this after the variable declaration
+app.use(cors(corsOptions)); // Use this after the variable declaration
+
 app.get("/api", (req, res) => {
   ref.once("value", function(snapshot) {
     console.log(snapshot.val());
-    res.json({ message: "Hello from the server-firebase:"+snapshot.val() });
+    res.json({ message: "Hello from the server-firebase: " + snapshot.val()});
   });
-
 });
+
 app.post('/api', (req,res) => {
   let data =  req.body;
   console.log(data)
-  res.send("recieved ");
-
+  res.send("recieved");
 });
  
 app.listen(PORT, () => {
