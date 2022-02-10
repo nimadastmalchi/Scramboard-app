@@ -1,8 +1,9 @@
 
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
 }
+/* this gets rid of the default margin of react apps*/
+
 
 ol, ul {
   padding-left: 30px;
@@ -41,15 +42,23 @@ ol, ul {
   background: #ddd;
 }
 
-.scram {
+.game {
+ 
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+}
+.game-div{
   display: flex;
   flex-direction: row;
 }
-
-.scram-info {
+.game-info {
   margin-left: 20px;
 }
-
-.color-picker {
-  margin-right: 20px;
+.profile{
+  direction: 'row-reverse';
+  width:10%;
+  background-color:rgb(228, 92, 13) ;
+  height: 100vh;
 }
+

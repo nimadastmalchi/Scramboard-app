@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import './index.css';
 import { SketchPicker } from 'react-color';
-
+import { Nav, Navbar, Container } from 'react-bootstrap'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import logo from './componenets/logo192.png';
 // dimensions of the board
 const num_rows = 50;
 const num_cols = 50;
 
 function Pixel(props) {
   return (
-    <button style={{backgroundColor: props.color,}} className="pixel" onClick={props.onClick}></button>
+    <button style={{ backgroundColor: props.color, }} className="pixel" onClick={props.onClick}></button>
   );
 }
 
@@ -18,7 +21,7 @@ class Board extends React.Component {
     super(props);
 
     this.state = {
-      pixels : Array.from(Array(num_rows), () => Array(num_cols).fill('#ffffff')), // initially white
+      pixels: Array.from(Array(num_rows), () => Array(num_cols).fill('#ffffff')), // initially white
     };
   }
 
@@ -30,7 +33,7 @@ class Board extends React.Component {
   renderPixel(i, j) {
     return (
       <Pixel
-        onClick={() => this.handleClick(i,j)}
+        onClick={() => this.handleClick(i, j)}
         color={this.state.pixels[i][j]}
       />
     );
@@ -55,17 +58,17 @@ class ColorPicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      background : "#fff",
+      background: "#fff",
     }
   }
 
   render() {
     return (
       <SketchPicker
-        color={ this.state.background }
-        onChangeComplete={ (color) => {
+        color={this.state.background}
+        onChangeComplete={(color) => {
           this.setState({
-            background : color,
+            background: color,
           });
           this.props.onColorChangeComplete(color); // this function is passed down from Scramboard
         }}
@@ -78,7 +81,7 @@ class Scramboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      color : '#ffffff',
+      color: '#ffffff',
     };
   }
 
@@ -88,9 +91,10 @@ class Scramboard extends React.Component {
   // a pixel button is clicked, its color is changed to this.state.color.
   handleColorChangeComplete = (color) => {
     this.setState({
-      color : color.hex,
+      color: color.hex,
     });
   }
+
 
   render() {
     let status = "Scramboard";
@@ -99,7 +103,7 @@ class Scramboard extends React.Component {
       const [data, setData] = React.useState(null);
 
       React.useEffect(() => {
-        fetch("http://localhost:3001/api")
+        fetch("http://localhost:3001/api/")
           .then((res) => res.json())
           .then((data) => setData(data.message));
       }, []);
@@ -112,20 +116,60 @@ class Scramboard extends React.Component {
         </div>
       );
     }
+    function handleSubmit()
+    {
+      fetch('http://localhost:3001/api', {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          "user": {
+            "email": "a",
+            "password": "b"
+          }
+        }),
+      }).then((data) => data.json()).catch((error) => console.log(error))
+    };
+
 
     return (
-      <div className="scram">
-        <div className="color-picker">
-          <ColorPicker onColorChangeComplete={ this.handleColorChangeComplete }/>
-        </div>
-        <div className="scram-board">
-          <Board currentColor={this.state.color}/>
-        </div>
-        <div className="scram-info">
-          <div>{status}</div>
-          <App/>
+      <div>
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand href="#home">
+              <img
+                alt=""
+                src={logo}
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+              />{' '}
+              React Bootstrap
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
+        <div className="game">
+          <div className="game-div">
+            <ColorPicker onColorChangeComplete={this.handleColorChangeComplete} />
+            <div className="game-board">
+              <Board currentColor={this.state.color} />
+            </div>
+            <div className="game-info">
+              <div>{status}</div>
+            </div>
+          </div>
+          <App />
+          <div className="profile">
+            <p>player's information</p>
+            <button
+              onClick={handleSubmit}>
+              submit
+            </button>
+          </div>
+
         </div>
       </div>
+
     );
   }
 }
@@ -133,6 +177,6 @@ class Scramboard extends React.Component {
 // ========================================
 
 ReactDOM.render(
-  <Scramboard/>,
+  <Scramboard />,
   document.getElementById('root')
 );
