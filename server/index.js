@@ -17,6 +17,22 @@ var ref = db.ref("hello/");
 
 const app = express();
 
+console.log(db.ref('pixels/').get().then((data) => {
+  val = data.val();
+  console.log(val);
+  if (val === 0) {
+    pixels = Array.from(Array(50), () => Array(50).fill('#ffffff'));
+    for (let i = 0; i < 50; ++i) {
+      for (let j = 0; j < 50; ++j) {
+        pixels[i][j] = "#fff";
+      }
+    }
+    db.ref('pixels/').set({
+      array: pixels,
+    });
+  }
+}));
+
 //reading json
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
