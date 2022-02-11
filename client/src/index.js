@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import './index.css';
 import { SketchPicker } from 'react-color';
-import { Nav, Navbar, Container } from 'react-bootstrap'
+import { Navbar, Container } from 'react-bootstrap'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import logo from './componenets/logo192.png';
+
 // dimensions of the board
-const num_rows = 50;
-const num_cols = 50;
+let num_rows = 50;
+let num_cols = 50;
 
 function Pixel(props) {
   return (
@@ -23,6 +22,19 @@ class Board extends React.Component {
     this.state = {
       pixels: Array.from(Array(num_rows), () => Array(num_cols).fill('#ffffff')), // initially white
     };
+
+    setInterval(() => this.setBoardFromDB(), 1000);
+  }
+
+  setBoardFromDB() {
+    fetch("http://localhost:3001/board/")
+      .then((res) => res.json())
+      .then((data) => {
+        this.state.pixels = data.array;
+        num_rows = data.num_rows;
+        num_cols = data.num_cols;
+      })
+      .then(() => this.setState({})); // re-render
   }
 
   handleClick(i, j) {
@@ -114,8 +126,7 @@ class Scramboard extends React.Component {
       );
     }
 
-    function handleSubmit()
-    {
+    function handleSubmit() {
       fetch('http://localhost:3001/api', {
         method: 'POST',
         mode: 'cors',
