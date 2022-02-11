@@ -5,10 +5,6 @@ import { SketchPicker } from 'react-color';
 import { Navbar, Container } from 'react-bootstrap'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-// dimensions of the board
-let num_rows = 50;
-let num_cols = 50;
-
 function Pixel(props) {
   return (
     <button style={{ backgroundColor: props.color, }} className="pixel" onClick={props.onClick}></button>
@@ -20,7 +16,9 @@ class Board extends React.Component {
     super(props);
 
     this.state = {
-      pixels: Array.from(Array(num_rows), () => Array(num_cols).fill('#ffffff')), // initially white
+      num_rows: 50,
+      num_cols: 50,
+      pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
     };
 
     setInterval(() => this.setBoardFromDB(), 1000);
@@ -31,14 +29,24 @@ class Board extends React.Component {
       .then((res) => res.json())
       .then((data) => {
         this.state.pixels = data.array;
-        num_rows = data.num_rows;
-        num_cols = data.num_cols;
+        this.state.num_rows = data.num_rows;
+        this.state.num_cols = data.num_cols;
       })
       .then(() => this.setState({})); // re-render
   }
 
   handleClick(i, j) {
     this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
+
+    fetch('http://localhost:3001/board', {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        "array": this.state.pixels,
+      })
+    }).then((data) => data.json()).catch((error) => console.log(error));
+
     this.setState({}); // re-render
   }
 
@@ -52,10 +60,10 @@ class Board extends React.Component {
   }
 
   render() {
-    const rows = Array(num_rows).fill(null);
-    for (let i = 0; i < num_rows; ++i) {
-      const pixel_elements = Array(num_cols).fill(null);
-      for (let j = 0; j < num_cols; ++j) {
+    const rows = Array(this.state.num_rows).fill(null);
+    for (let i = 0; i < this.state.num_rows; ++i) {
+      const pixel_elements = Array(this.state.num_cols).fill(null);
+      for (let j = 0; j < this.state.num_cols; ++j) {
         pixel_elements[j] = this.renderPixel(i, j);
       }
       rows[i] = <div key={i} className="board-row">{pixel_elements}</div>;

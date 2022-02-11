@@ -68,7 +68,7 @@ app.get("/api", (req, res) => {
 app.post('/api', (req, res) => {
   let data = req.body;
   console.log(data.user.email);
-  res.send("recieved ");
+  res.send("recieved");
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   db.ref('visited/').set({
@@ -77,6 +77,7 @@ app.post('/api', (req, res) => {
   });
 });
 
+// Read to DB
 app.get("/board", (req, res) => {
   pixelsRef.get().then(data => {
     val = data.val();
@@ -84,6 +85,16 @@ app.get("/board", (req, res) => {
       return;
     }
     res.json(val);
+  });
+});
+
+// Write to DB
+app.post('/board', (req, res) => {
+  res.send("received");
+  pixelsRef.set({
+    array: req.body.array,
+    num_rows: NUM_ROWS,
+    num_cols: NUM_COLS,
   });
 });
 
