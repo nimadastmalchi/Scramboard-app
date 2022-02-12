@@ -12,8 +12,8 @@ admin.initializeApp({
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = admin.database();
-var ref = db.ref("hello/");
+const db = admin.database();
+const helloRef = db.ref("hello/");
 const pixelsRef = db.ref("pixels");
 
 const app = express();
@@ -57,8 +57,8 @@ const corsOptions = {
 app.use(cors(corsOptions)) // Use this after the variable declaration
 
 // Read from db
-app.get("/api", (req, res) => {
-  ref.once("value", function (snapshot) {
+app.get('/api', (req, res) => {
+  helloRef.once("value", function (snapshot) {
     console.log(snapshot.val());
     res.json({ message: "Hello from the server-firebase:" + snapshot.val() });
   });
@@ -78,7 +78,7 @@ app.post('/api', (req, res) => {
 });
 
 // Read to DB
-app.get("/board", (req, res) => {
+app.get('/board', (req, res) => {
   pixelsRef.get().then(data => {
     val = data.val();
     if (val === 0) {
@@ -89,13 +89,15 @@ app.get("/board", (req, res) => {
 });
 
 // Write to DB
+// Request must be of form:
+// {
+//    "row": x,
+//    "col": y,
+//    "new_color": "#rrggbb"|"#rgb",
+// }
 app.post('/board', (req, res) => {
   res.send("received");
-  pixelsRef.set({
-    array: req.body.array,
-    num_rows: NUM_ROWS,
-    num_cols: NUM_COLS,
-  });
+  db.ref('pixels/array/' + req.body.row + '/' + req.body.col + '/').set(req.body.new_color);
 });
 
 app.listen(PORT, () => {

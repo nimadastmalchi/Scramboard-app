@@ -25,6 +25,7 @@ class Board extends React.Component {
   }
 
   setBoardFromDB() {
+    // get data from node
     fetch("http://localhost:3001/board/")
       .then((res) => res.json())
       .then((data) => {
@@ -38,12 +39,15 @@ class Board extends React.Component {
   handleClick(i, j) {
     this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
 
+    // send data to node
     fetch('http://localhost:3001/board', {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        "array": this.state.pixels,
+        row: i,
+        col: j,
+        new_color: this.props.currentColor,
       })
     }).then((data) => data.json()).catch((error) => console.log(error));
 
