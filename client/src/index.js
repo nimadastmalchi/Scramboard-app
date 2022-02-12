@@ -21,7 +21,8 @@ class Board extends React.Component {
       pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
     };
 
-    setInterval(() => this.setBoardFromDB(), 1000);
+    this.setBoardFromDB();
+    setInterval(() => this.setBoardFromDB(), 5000);
   }
 
   setBoardFromDB() {
@@ -29,15 +30,17 @@ class Board extends React.Component {
     fetch("http://localhost:3001/board/")
       .then((res) => res.json())
       .then((data) => {
-        this.state.pixels = data.array;
-        this.state.num_rows = data.num_rows;
-        this.state.num_cols = data.num_cols;
-      })
-      .then(() => this.setState({})); // re-render
+        this.setState({
+          num_rows: data.num_rows,
+          num_cols: data.num_cols,
+          pixels: data.array,
+        });
+      });
   }
 
   handleClick(i, j) {
     this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
+    this.setState({});
 
     // send data to node
     fetch('http://localhost:3001/board', {
@@ -50,8 +53,6 @@ class Board extends React.Component {
         new_color: this.props.currentColor,
       })
     }).then((data) => data.json()).catch((error) => console.log(error));
-
-    this.setState({}); // re-render
   }
 
   renderPixel(i, j) {
@@ -120,24 +121,6 @@ class Scramboard extends React.Component {
   }
 
   render() {
-    function App() {
-      const [data, setData] = React.useState(null);
-
-      React.useEffect(() => {
-        fetch("http://localhost:3001/api/")
-          .then((res) => res.json())
-          .then((data) => setData(data.message));
-      }, []);
-
-      return (
-        <div className="App">
-          <header className="App-header">
-            <p>{!data ? "Connecting to the server..." : data}</p>
-          </header>
-        </div>
-      );
-    }
-
     function handleSubmit() {
       fetch('http://localhost:3001/api', {
         method: 'POST',
@@ -159,6 +142,9 @@ class Scramboard extends React.Component {
             <Navbar.Brand href="#home">
               Scramboard 
             </Navbar.Brand>
+            <Navbar.Brand href="#login">
+              login
+            </Navbar.Brand>
           </Container>
         </Navbar>
         <div className="scram">
@@ -168,9 +154,8 @@ class Scramboard extends React.Component {
               <Board currentColor={this.state.color} />
             </div>
           </div>
-          <App/>
           <div className="profile">
-            <p>player's information</p>
+            <p>History</p>
             <button
               onClick={handleSubmit}>
               submit

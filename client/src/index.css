@@ -1,12 +1,17 @@
 
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: 14px "Redressed", Futura, sans-serif;
 }
 /* this gets rid of the default margin of react apps*/
 
 
 ol, ul {
   padding-left: 30px;
+}
+
+.scram-board {
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .board-row:after {
@@ -38,29 +43,23 @@ ol, ul {
   outline: none;
 }
 
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-
 .scram {
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.scram-div{
+.scram-div {
   display: flex;
   flex-direction: row;
 }
 
-.scram-info {
-  margin-left: 20px;
-}
-
-.profile{
+.profile {
+  box-sizing: border-box;
+  padding: 40px;
+  text-align: center;
   direction: 'row-reverse';
-  width:10%;
-  background-color:rgb(228, 92, 13) ;
+  width:20%;
+  background-color: rgb(228, 92, 13) ;
   height: 100vh;
 }
-

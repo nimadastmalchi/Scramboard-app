@@ -24,7 +24,7 @@ const NUM_COLS = 50;
 pixelsRef.get().then((data) => {
   val = data.val();
   console.log("Value of pixels: " + val);
-  if (val === 0) {
+  if (val === null) {
     pixels = Array.from(Array(NUM_ROWS), () => Array(NUM_COLS).fill('#ffffff'));
     for (let i = 0; i < NUM_ROWS; ++i) {
       for (let j = 0; j < NUM_COLS; ++j) {
@@ -59,7 +59,6 @@ app.use(cors(corsOptions)) // Use this after the variable declaration
 // Read from db
 app.get('/api', (req, res) => {
   helloRef.once("value", function (snapshot) {
-    console.log(snapshot.val());
     res.json({ message: "Hello from the server-firebase:" + snapshot.val() });
   });
 });
@@ -77,7 +76,7 @@ app.post('/api', (req, res) => {
   });
 });
 
-// Read to DB
+// Read from DB
 app.get('/board', (req, res) => {
   pixelsRef.get().then(data => {
     val = data.val();
