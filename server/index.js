@@ -42,10 +42,7 @@ pixelsRef.get().then((data) => {
 //reading json
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+
 app.use(jsonParser);
 
 const cors = require("cors");
