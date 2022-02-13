@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap'
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LoginSignUpModal from '../Modal/LoginSignUpModal';
 
 const CustomNavbar = (props) => {
@@ -8,12 +8,11 @@ const CustomNavbar = (props) => {
 
   return (
     <Navbar bg="dark" variant="dark">
-<<<<<<< HEAD:client/src/CustomNavbar/CustomNavbar.js
       <Container>
         <Navbar.Brand href="/">
           Scramboard
         </Navbar.Brand>
-        <Navbar.Brand href="/login">
+        <Navbar.Brand>
           <Button variant="primary" onClick={() => setModalShow(true)}>
             Login/SignUp
           </Button>
