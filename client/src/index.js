@@ -1,153 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 import './index.css';
-import Board from './Board/Board';
-import CustomNavbar from './CustomNavbar/CustomNavbar'
-import ColorPicker from './ColorPicker/ColorPicker'
+import Scramboard from './MainPage/Scramboard/Scramboard';
 
-class Scramboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      color: '#ffffff',
-    };
-  }
-
-  // Once a color change is complete, this function is called.
-  // It sets the color prop of Scramboard, which is then passed down
-  // to the Board component, then the Pixel componenet. Every time
-  // a pixel button is clicked, its color is changed to this.state.color.
-  handleColorChangeComplete = (color) => {
-    this.setState({
-      color: color.hex,
-    });
-  }
-
-  render() {
-    function handleSubmit() {
-      fetch('http://localhost:3001/api', {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          "user": {
-            "email": "a",
-            "password": "b"
-          }
-        }),
-      }).then((data) => data.json()).catch((error) => console.log(error));
-    };
-
-    return (
+const App = () => {
+  return (
+    <Router>
       <div>
-        <CustomNavbar/>
-        {/*
-        <Navbar bg="dark" variant="dark">
-          <Container>
-            <Navbar.Brand href="#home">
-              Scramboard 
-            </Navbar.Brand>
-            <Navbar.Brand href="#login">
-              login
-            </Navbar.Brand>
-          </Container>
-        </Navbar>
-        */}
-        <div className="scram">
-          <div className="scram-div">
-            <ColorPicker onColorChangeComplete={this.handleColorChangeComplete} />
-            <div className="scram-board">
-              <Board currentColor={this.state.color} />
-            </div>
-          </div>
-          <div className="profile">
-            <p>History</p>
-            <button
-              onClick={handleSubmit}>
-              submit
-            </button>
-          </div>
-        </div>
+        {/* A <Routes> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Routes>
+          <Route path="/" element={<Scramboard></Scramboard>}/>
+          <Route path="/heatmap" element={<div>heatmap</div>}></Route>
+        </Routes>
       </div>
-    );
-  }
+    </Router>
+  );
 }
-
-// ========================================
 
 ReactDOM.render(
-  <Scramboard />,
+  <App/>,
   document.getElementById('root')
 );
-
-
-
-
-{/*
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      num_rows: 50,
-      num_cols: 50,
-      pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
-    };
-
-    this.setBoardFromDB();
-    setInterval(() => this.setBoardFromDB(), 5000);
-  }
-
-  setBoardFromDB() {
-    // get data from node
-    fetch("http://localhost:3001/board/")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({
-          num_rows: data.num_rows,
-          num_cols: data.num_cols,
-          pixels: data.array,
-        });
-      });
-  }
-
-  handleClick(i, j) {
-    this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
-    this.setState({});
-    // send data to node
-    fetch('http://localhost:3001/board', {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        row: i,
-        col: j,
-        new_color: this.props.currentColor,
-      })
-    }).then((data) => data.json()).catch((error) => console.log(error));
-  }
-
-  renderPixel(i, j) {
-    return (
-      <Pixel
-        onClick={() => this.handleClick(i, j)}
-        color={this.state.pixels[i][j]}
-      />
-    );
-  }
-
-  render() {
-    const rows = Array(this.state.num_rows).fill(null);
-    for (let i = 0; i < this.state.num_rows; ++i) {
-      const pixel_elements = Array(this.state.num_cols).fill(null);
-      for (let j = 0; j < this.state.num_cols; ++j) {
-        pixel_elements[j] = this.renderPixel(i, j);
-      }
-      rows[i] = <div key={i} className="board-row">{pixel_elements}</div>;
-    }
-    return (
-      <div>{rows}</div>
-    )
-  }
-}
-*/}

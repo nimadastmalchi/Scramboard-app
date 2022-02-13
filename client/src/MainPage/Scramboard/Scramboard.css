@@ -1,0 +1,25 @@
+.scram-board {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.scram {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.scram-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.profile {
+  box-sizing: border-box;
+  padding: 40px;
+  text-align: center;
+  direction: 'row-reverse';
+  width:20%;
+  background-color: rgb(228, 92, 13) ;
+  height: 100vh;
+}
