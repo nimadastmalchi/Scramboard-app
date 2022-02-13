@@ -1,106 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { SketchPicker } from 'react-color';
-import { Navbar, Container } from 'react-bootstrap'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
-function Pixel(props) {
-  return (
-    <button style={{ backgroundColor: props.color, }} className="pixel" onClick={props.onClick}></button>
-  );
-}
-
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      num_rows: 50,
-      num_cols: 50,
-      pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
-    };
-
-    this.setBoardFromDB();
-    setInterval(() => this.setBoardFromDB(), 5000);
-  }
-
-  setBoardFromDB() {
-    // get data from node
-    fetch("http://localhost:3001/board/")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({
-          num_rows: data.num_rows,
-          num_cols: data.num_cols,
-          pixels: data.array,
-        });
-      });
-  }
-
-  handleClick(i, j) {
-    this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
-    this.setState({});
-
-    // send data to node
-    fetch('http://localhost:3001/board', {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        row: i,
-        col: j,
-        new_color: this.props.currentColor,
-      })
-    }).then((data) => data.json()).catch((error) => console.log(error));
-  }
-
-  renderPixel(i, j) {
-    return (
-      <Pixel
-        onClick={() => this.handleClick(i, j)}
-        color={this.state.pixels[i][j]}
-      />
-    );
-  }
-
-  render() {
-    const rows = Array(this.state.num_rows).fill(null);
-    for (let i = 0; i < this.state.num_rows; ++i) {
-      const pixel_elements = Array(this.state.num_cols).fill(null);
-      for (let j = 0; j < this.state.num_cols; ++j) {
-        pixel_elements[j] = this.renderPixel(i, j);
-      }
-      rows[i] = <div key={i} className="board-row">{pixel_elements}</div>;
-    }
-    return (
-      <div>{rows}</div>
-    )
-  }
-}
-
-class ColorPicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      background: "#fff",
-    }
-  }
-
-  render() {
-    return (
-      <SketchPicker
-        color={this.state.background}
-        onChangeComplete={(color) => {
-          this.setState({
-            background: color,
-          });
-          this.props.onColorChangeComplete(color); // this function is passed down from Scramboard
-        }}
-      />
-    );
-  }
-}
+import Board from './Board/Board';
+import CustomNavbar from './CustomNavbar/CustomNavbar'
+import ColorPicker from './ColorPicker/ColorPicker'
 
 class Scramboard extends React.Component {
   constructor(props) {
@@ -137,6 +40,8 @@ class Scramboard extends React.Component {
 
     return (
       <div>
+        <CustomNavbar/>
+        {/*
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand href="#home">
@@ -147,6 +52,7 @@ class Scramboard extends React.Component {
             </Navbar.Brand>
           </Container>
         </Navbar>
+        */}
         <div className="scram">
           <div className="scram-div">
             <ColorPicker onColorChangeComplete={this.handleColorChangeComplete} />
@@ -173,3 +79,75 @@ ReactDOM.render(
   <Scramboard />,
   document.getElementById('root')
 );
+
+
+
+
+{/*
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      num_rows: 50,
+      num_cols: 50,
+      pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
+    };
+
+    this.setBoardFromDB();
+    setInterval(() => this.setBoardFromDB(), 5000);
+  }
+
+  setBoardFromDB() {
+    // get data from node
+    fetch("http://localhost:3001/board/")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({
+          num_rows: data.num_rows,
+          num_cols: data.num_cols,
+          pixels: data.array,
+        });
+      });
+  }
+
+  handleClick(i, j) {
+    this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
+    this.setState({});
+    // send data to node
+    fetch('http://localhost:3001/board', {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        row: i,
+        col: j,
+        new_color: this.props.currentColor,
+      })
+    }).then((data) => data.json()).catch((error) => console.log(error));
+  }
+
+  renderPixel(i, j) {
+    return (
+      <Pixel
+        onClick={() => this.handleClick(i, j)}
+        color={this.state.pixels[i][j]}
+      />
+    );
+  }
+
+  render() {
+    const rows = Array(this.state.num_rows).fill(null);
+    for (let i = 0; i < this.state.num_rows; ++i) {
+      const pixel_elements = Array(this.state.num_cols).fill(null);
+      for (let j = 0; j < this.state.num_cols; ++j) {
+        pixel_elements[j] = this.renderPixel(i, j);
+      }
+      rows[i] = <div key={i} className="board-row">{pixel_elements}</div>;
+    }
+    return (
+      <div>{rows}</div>
+    )
+  }
+}
+*/}

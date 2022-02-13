@@ -78,12 +78,12 @@ app.post('/api', (req, res) => {
 
 // Read from DB
 app.get('/board', (req, res) => {
-  pixelsRef.get().then(data => {
+  pixelsRef.get().then((data) => {
     val = data.val();
     if (val === 0) {
       return;
     }
-    res.json(val);
+    return res.json(val);
   });
 });
 
