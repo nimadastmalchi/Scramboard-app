@@ -13,7 +13,7 @@ class Board extends React.Component {
     };
 
     this.setBoardFromDB();
-    setInterval(() => this.setBoardFromDB(), 5000);
+    //setInterval(() => this.setBoardFromDB(), 10000);
   }
 
   setBoardFromDB() {
