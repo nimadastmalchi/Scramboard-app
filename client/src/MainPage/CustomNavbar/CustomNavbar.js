@@ -26,4 +26,3 @@ const CustomNavbar = (props) => {
   );
 }
 export default CustomNavbar;
-
