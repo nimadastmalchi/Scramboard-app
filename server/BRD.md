@@ -32,7 +32,7 @@
   channels and messages, and creating new channels and messages. These requests
   are served by a Express API.
 
-- All data about users, channels, and messages is stored in a MySQL database.
+- All data about users, channels, and messages is stored in Firebase database.
 
 - Other features not listed here are not in scope, like @-mentioning
   users, avatars, rich text or the like.
