@@ -34,6 +34,9 @@
 
 - All data about users, channels, and messages is stored in a MySQL database.
 
+- Other features not listed here are not in scope, like @-mentioning
+  users, avatars, rich text or the like.
+
 
 ### P1 requirements
 - Like Slack, if a message contains any URLs that point to [valid image formats](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Supported_image_formats),
@@ -61,7 +64,3 @@
   in a channel, it displays a notification to users in that channel without
   moving the existing messages on the page. Users may click on the notification
   to load the new messages.
-
-
-- Other features not listed here are not in scope, like @-mentioning
-  users, avatars, rich text or the like.
