@@ -1,9 +1,29 @@
 import { Modal, Button, Tabs, Tab} from 'react-bootstrap';
-import React from 'react';
+import {React, useState} from 'react';
+
 function LoginSignUpModal(props) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    function onSignup() {
+        // send data to node
+        fetch('http://localhost:3001/newuser', {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            })
+        }).then((data) => data.json()).catch((error) => console.log(error));
+
+        props.callbackuser(email);
+    }
+
     return (
         <Modal
-            {...props}
+            show={props.show}
+            onHide={props.onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -19,15 +39,15 @@ function LoginSignUpModal(props) {
                 
                 >
                     <Tab eventKey="Login" title="Login">
-                        <form>
+                        <form onSubmit={(event) => event.preventDefault()}>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" className="form-control" placeholder="Enter email" />
+                                <input type="email" className="form-control" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)}/>
                             </div>
 
                             <div className="form-group">
                                 <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Enter password" />
+                                <input type="password" className="form-control" placeholder="Enter password" value={password} onChange={(event) => setPassword(event.target.value)} />
                             </div>
 
                             <div className="form-group">
@@ -39,26 +59,26 @@ function LoginSignUpModal(props) {
 
                             <Button style={{marginTop:'20px'}} type="submit" className="btn btn-dark btn-lg btn-block">Log in</Button>
                             <p className="forgot-password text-right">
-                                Forgot <a href="#">password?</a>
+                                <a href="/">Forgot password?</a>
                             </p>
                         </form>
                     </Tab>
 
                     <Tab eventKey="SignUp" title="SignUp">
-                    <form>
+                    <form onSubmit={(event) => event.preventDefault()}>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" className="form-control" placeholder="Enter email" />
+                                <input type="email" className="form-control" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
                             </div>
 
                             <div className="form-group">
                                 <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Enter password" />
+                                <input type="password" className="form-control" placeholder="Enter password" onChange={(event) => setPassword(event.target.value)}/>
                             </div>
 
                            
 
-                            <Button style={{marginTop:'20px'}}type="submit" variant="primary" className="btn  btn-lg btn-block">SignUp</Button>
+                            <Button style={{marginTop:'20px'}}type="submit" variant="primary" className="btn  btn-lg btn-block" onClick={onSignup}>SignUp</Button>
                         
                         </form>
                     </Tab>

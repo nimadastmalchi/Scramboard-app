@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './Scramboard.css';
 import Board from '../Board/Board';
 import CustomNavbar from '../CustomNavbar/CustomNavbar'
@@ -23,20 +23,6 @@ class Scramboard extends React.Component {
   }
 
   render() {
-    function handleSubmit() {
-      fetch('http://localhost:3001/api', {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          "user": {
-            "email": "a",
-            "password": "b"
-          }
-        }),
-      }).then((data) => data.json()).catch((error) => console.log(error));
-    };
-
     return (
       <div>
         <CustomNavbar/>
@@ -50,7 +36,7 @@ class Scramboard extends React.Component {
           <div className="profile">
             <p>History</p>
             <button
-              onClick={handleSubmit}>
+              onClick={() => console.log('TODO')}>
               submit
             </button>
           </div>

@@ -5,6 +5,30 @@ import LoginSignUpModal from '../Modal/LoginSignUpModal';
 
 const CustomNavbar = (props) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState("");
+
+  function UserInfo() {
+    if (userEmail !== "") {
+      return (
+        <Navbar.Brand>
+          {userEmail}
+        </Navbar.Brand>
+      );
+    }   
+
+    return (
+      <Navbar.Brand>
+        <Button variant="primary" onClick={() => setModalShow(true)}>
+          Login/SignUp
+        </Button>
+        <LoginSignUpModal 
+          callbackuser={setUserEmail} 
+          show={modalShow} 
+          onHide={() => setModalShow(false)}
+        />
+      </Navbar.Brand>
+    );
+  }
 
   return (
     <Navbar bg="dark" variant="dark">
@@ -12,15 +36,7 @@ const CustomNavbar = (props) => {
         <Navbar.Brand href="/">
           Scramboard
         </Navbar.Brand>
-        <Navbar.Brand>
-          <Button variant="primary" onClick={() => setModalShow(true)}>
-            Login/SignUp
-          </Button>
-          <LoginSignUpModal
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-          />
-        </Navbar.Brand>
+        <UserInfo/>
       </Container>
     </Navbar>
   );

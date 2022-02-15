@@ -1,19 +1,19 @@
 // Board.js
 import Pixel from '../Pixel/Pixel';
-import React, { useState } from 'react';
+import React from 'react';
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      num_rows: 50,
-      num_cols: 50,
+      numRows: 50,
+      numCols: 50,
       pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
     };
 
     this.setBoardFromDB();
-    //setInterval(() => this.setBoardFromDB(), 10000);
+    setInterval(() => this.setBoardFromDB(), 5000);
   }
 
   setBoardFromDB() {
@@ -56,17 +56,17 @@ class Board extends React.Component {
   }
 
   render() {
-    const rows = Array(this.state.num_rows).fill(null);
-    for (let i = 0; i < this.state.num_rows; ++i) {
-      const pixel_elements = Array(this.state.num_cols).fill(null);
-      for (let j = 0; j < this.state.num_cols; ++j) {
+    const rows = Array(this.state.numRows).fill(null);
+    for (let i = 0; i < this.state.numRows; ++i) {
+      const pixel_elements = Array(this.state.numCols).fill(null);
+      for (let j = 0; j < this.state.numCols; ++j) {
         pixel_elements[j] = this.renderPixel(i, j);
       }
       rows[i] = <div key={i} className="board-row">{pixel_elements}</div>;
     }
     return (
       <div>{rows}</div>
-    )
+    );
   }
 }
 

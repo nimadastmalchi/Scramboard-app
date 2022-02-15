@@ -2,6 +2,8 @@
 const express = require("express");
 const PORT = process.env.PORT || 3001;
 
+const init = require('./init.js')
+
 //firebase
 var admin = require("firebase-admin");
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
@@ -13,33 +15,16 @@ admin.initializeApp({
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 const db = admin.database();
-const helloRef = db.ref("hello/");
 const pixelsRef = db.ref("pixels");
 
 const app = express();
 
-// Set-up pixels ref if database is not set-up already
+// initialize data in DB if needed
 const NUM_ROWS = 50;
 const NUM_COLS = 50;
-pixelsRef.get().then((data) => {
-  val = data.val();
-  console.log("Value of pixels: " + val);
-  if (val === null) {
-    pixels = Array.from(Array(NUM_ROWS), () => Array(NUM_COLS).fill('#ffffff'));
-    for (let i = 0; i < NUM_ROWS; ++i) {
-      for (let j = 0; j < NUM_COLS; ++j) {
-        pixels[i][j] = "#fff";
-      }
-    }
-    pixelsRef.set({
-      num_rows: NUM_ROWS,
-      num_cols: NUM_COLS,
-      array: pixels,
-    });
-  }
-});
+init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
 
-//reading json
+// Utils for reading JSON:
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 
@@ -53,27 +38,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions)) // Use this after the variable declaration
 
-// Read from db
-app.get('/api', (req, res) => {
-  helloRef.once("value", function (snapshot) {
-    res.json({ message: "Hello from the server-firebase:" + snapshot.val() });
-  });
-});
-
-// Write to db
-app.post('/api', (req, res) => {
-  let data = req.body;
-  console.log(data.user.email);
-  res.send("recieved");
-  var today = new Date();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  db.ref('visited/').set({
-    visit: time,
-    name:data.user.email
-  });
-});
-
-// Read from DB
+// ********** PIXELS ************
+// Read from board and send to react
 app.get('/board', (req, res) => {
   pixelsRef.get().then((data) => {
     val = data.val();
@@ -84,16 +50,32 @@ app.get('/board', (req, res) => {
   });
 });
 
-// Write to DB
+// Write to board
 // Request must be of form:
 // {
-//    "row": x,
-//    "col": y,
-//    "new_color": "#rrggbb"|"#rgb",
+//    row: x,
+//    col: y,
+//    new_color: "#rrggbb"|"#rgb",
 // }
 app.post('/board', (req, res) => {
   res.send("received");
   db.ref('pixels/array/' + req.body.row + '/' + req.body.col + '/').set(req.body.new_color);
+});
+
+
+// ******** USER LOGIN/SIGNUP *********
+// Write to users
+// req.body must be of form:
+// {
+//     email: "xxx",
+//     password: "yyy",
+// }
+app.post('/newuser', (req, res) => {
+  res.send("received");
+  db.ref('users').push({
+    email: req.body.email,
+    password: req.body.password,
+  });
 });
 
 app.listen(PORT, () => {
