@@ -15,9 +15,33 @@ function LoginSignUpModal(props) {
                 email: email,
                 password: password,
             })
-        }).then((data) => data.json()).catch((error) => console.log(error));
+        })
+        .then((res) => res.json())
+        .then((res) => console.log(res.userid))
+        .catch((error) => console.log(error));
 
         props.callbackuser(email);
+    }
+
+    function onLogin() {
+        // send data to node
+        fetch('http://localhost:3001/userlogin', {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            })
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log(res.userid);
+            if (res.userid != null) {
+                props.callbackuser(email);
+            }
+        })
+        .catch((error) => console.log(error));
     }
 
     return (
@@ -57,7 +81,7 @@ function LoginSignUpModal(props) {
                                 </div>
                             </div>
 
-                            <Button style={{marginTop:'20px'}} type="submit" className="btn btn-dark btn-lg btn-block">Log in</Button>
+                            <Button style={{marginTop:'20px'}} type="submit" className="btn btn-dark btn-lg btn-block" onClick={onLogin}>Log in</Button>
                             <p className="forgot-password text-right">
                                 <a href="/">Forgot password?</a>
                             </p>

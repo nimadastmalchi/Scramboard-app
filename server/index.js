@@ -71,10 +71,36 @@ app.post('/board', (req, res) => {
 //     password: "yyy",
 // }
 app.post('/newuser', (req, res) => {
-  res.send("received");
-  db.ref('users').push({
+  const user = db.ref('users').push({
     email: req.body.email,
     password: req.body.password,
+  })
+  .then((snap) => {
+    res.json({ 
+      userid: snap.key,
+    });
+  });
+});
+
+// Read from users
+// req.body must be of form:
+// {
+//   email: "xxx", 
+//   password: "yyy",
+// }
+app.post('/userlogin', (req, res) => {
+  let resUserid = null;
+  db.ref('users').once('value')
+    .then((snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        if (childSnapshot.val().email === req.body.email &&
+            childSnapshot.val().password === req.body.password) {
+          resUserid = childSnapshot.key;
+        }
+    });
+  });
+  res.json({
+    userid: resUserid,
   });
 });
 
