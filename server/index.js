@@ -9,7 +9,6 @@ var admin = require("firebase-admin");
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-
   databaseURL: "https://scramboard-default-rtdb.firebaseio.com/"
 });
 
@@ -71,15 +70,23 @@ app.post('/board', (req, res) => {
 //     password: "yyy",
 // }
 app.post('/newuser', (req, res) => {
-  const user = db.ref('users').push({
+  let reponse = "received";
+  admin.auth().createUser({
     email: req.body.email,
     password: req.body.password,
   })
-  .then((snap) => {
-    res.json({ 
-      userid: snap.key,
-    });
-  });
+    .then((userRecord) => {
+      db.ref('users/' + userRecord.uid).set({
+        email: req.body.email,
+        password: req.body.password,
+      });
+    })
+    .catch((error) => {
+      console.log('Error creating new user:', error);
+      reponse = error.message;
+    }).then(() => {
+      res.send({ message: reponse });
+    })
 });
 
 // Read from users
