@@ -1,5 +1,9 @@
 // server/index.js
 const express = require("express");
+const { Server } = require('socket.io');
+const http = require('http');
+const cors = require('cors');
+
 const PORT = process.env.PORT || 3001;
 
 //firebase
@@ -15,8 +19,10 @@ admin.initializeApp({
 const db = admin.database();
 const helloRef = db.ref("hello/");
 const pixelsRef = db.ref("pixels");
+const chatRef = db.ref("chat");
 
 const app = express();
+
 
 // Set-up pixels ref if database is not set-up already
 const NUM_ROWS = 50;
@@ -45,7 +51,6 @@ var jsonParser = bodyParser.json()
 
 app.use(jsonParser);
 
-const cors = require("cors");
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
@@ -95,6 +100,72 @@ app.post('/board', (req, res) => {
   res.send("received");
   db.ref('pixels/array/' + req.body.row + '/' + req.body.col + '/').set(req.body.new_color);
 });
+
+class ChatConnection {
+  constructor(io, socket) {
+    this.socket = socket;
+    this.io = io;
+
+    //This event will be used by new clients(connections) to retrieve all existing messages from the server.
+    socket.on('getMessages', () => this.getMessages());
+
+    //This event will be triggered by the client whenever a new message has been posted in the chat.
+    socket.on('message', (payload) => this.handleMessage(payload));
+
+    //Predefined events that are triggered when the socket(client) disconnects, for now it is a no-op 
+    socket.on('disconnect', () => this.disconnect());
+    
+    //Predefined events that are triggered when the connection fails, for now it just log the error msg to console
+    socket.on('connect_error', (err) => {
+      console.log(`connect_error due to ${err.message}`);
+    });
+  }
+  
+  sendMessage(message) {
+    this.io.sockets.emit('message', message);
+  }
+  
+  getMessages() {
+    chatRef.once("value").then(function(snapshot) {
+      snapshot.forEach((childSnapshot) => {
+        const msgJson = childSnapshot.val();
+        this.sendMessage(msgJson.message);
+      });
+    });
+  }
+
+  handleMessage(payload) {
+    const message = {
+      username: payload.username,
+      message: payload.message
+    };
+    //write to firebase
+    chatRef.push({
+      message: message,
+      time: Date.now()
+    });
+    this.sendMessage(message);
+  }
+
+  disconnect() {
+    console.log(`A chat connection terminated.`);
+  }
+}
+
+function chat(io) {
+  io.on('connection', (socket) => {
+    new ChatConnection(io, socket);   
+  });
+};
+
+const server = http.createServer(app);
+const io = new Server(server,{
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
+chat(io);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
