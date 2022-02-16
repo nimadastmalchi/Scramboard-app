@@ -128,22 +128,25 @@ class ChatConnection {
   getMessages() {
     chatRef.once("value").then(function(snapshot) {
       snapshot.forEach((childSnapshot) => {
-        const msgJson = childSnapshot.val();
-        this.sendMessage(msgJson.message);
+        const key = childSnapshot.key();
+        var message = childSnapshot.val();
+        message.id = key;
+        this.sendMessage(message);
       });
     });
   }
 
   handleMessage(payload) {
-    const message = {
+    const time = Date.now();
+    var message = {
       username: payload.username,
-      message: payload.message
+      message: payload.message,
+      time: time
     };
-    //write to firebase
-    chatRef.push({
-      message: message,
-      time: Date.now()
-    });
+    //write to db
+    const key = chatRef.push(message).key;
+    //append message id and send to client
+    message.id = key;
     this.sendMessage(message);
   }
 
