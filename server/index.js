@@ -1,6 +1,5 @@
 // server/index.js
 const express = require("express");
-const { Server } = require('socket.io');
 const http = require('http');
 const cors = require('cors');
 
@@ -126,9 +125,9 @@ class ChatConnection {
   }
   
   getMessages() {
-    chatRef.once("value").then(function(snapshot) {
+    chatRef.once("value").then((snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        const key = childSnapshot.key();
+        const key = childSnapshot.key;
         var message = childSnapshot.val();
         message.id = key;
         this.sendMessage(message);
@@ -162,6 +161,7 @@ function chat(io) {
 };
 
 const server = http.createServer(app);
+const { Server } = require('socket.io');
 const io = new Server(server,{
   cors: {
     origin: '*',
@@ -170,6 +170,6 @@ const io = new Server(server,{
 });
 chat(io);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

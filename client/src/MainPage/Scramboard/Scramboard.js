@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './Scramboard.css';
 import Board from '../Board/Board';
-import CustomNavbar from '../CustomNavbar/CustomNavbar'
-import ColorPicker from '../ColorPicker/ColorPicker'
+import CustomNavbar from '../CustomNavbar/CustomNavbar';
+import ColorPicker from '../ColorPicker/ColorPicker';
+import ChatWindow from '../ChatWindow/ChatWindow';
 
 class Scramboard extends React.Component {
   constructor(props) {
@@ -53,6 +54,9 @@ class Scramboard extends React.Component {
               onClick={handleSubmit}>
               submit
             </button>
+            <div className="chatbox">
+              <ChatWindow/>
+            </div>
           </div>
         </div>
       </div>

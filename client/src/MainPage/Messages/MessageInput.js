@@ -12,6 +12,7 @@ const MessageInput = ({socket}) => {
         username: username,
         message: value
     }
+    console.log("emit message: " + message);
     socket.emit('message', message);
     setValue('');
   };
