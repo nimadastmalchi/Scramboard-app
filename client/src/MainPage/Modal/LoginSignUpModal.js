@@ -1,13 +1,7 @@
 import { Modal, Button, Tabs, Tab, Alert } from 'react-bootstrap';
 import { React, useState } from 'react';
-import {
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut,
-} from "firebase/auth";
-
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseCongfig";
-
 
 function LoginSignUpModal(props) {
     const [email, setEmail] = useState("");
@@ -30,7 +24,7 @@ function LoginSignUpModal(props) {
             .then((result) => {
                 if (result.message === "received") {
                     alert("Successful Sign up")
-                    props.callbackuser(email);
+                    props.setuseremail(email);
                 }
                 else {
                     alert(result.message)
@@ -44,7 +38,7 @@ function LoginSignUpModal(props) {
         signInWithEmailAndPassword(auth, email, password)
             .then((userRecord) => {
                 console.log(userRecord.user.uid)
-                props.callbackuser(email);
+                props.setuseremail(email);
                 alert("logged in")
 
                 fetch('http://localhost:3001/userlogin', {
@@ -79,7 +73,7 @@ function LoginSignUpModal(props) {
         .then((res) => {
             console.log(res.userid);
             if (res.userid != null) {
-                props.callbackuser(email);
+                props.setuseremail(email);
             }
         })
         .catch((error) => console.log(error));

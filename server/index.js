@@ -84,6 +84,7 @@ app.post('/newuser', (req, res) => {
         email: req.body.email,
         password: req.body.password,
       });
+      userID = userRecord.uid;
     })
     .catch((error) => {
       console.log('Error creating new user:', error);
