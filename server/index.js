@@ -6,6 +6,8 @@ const init = require('./init.js')
 
 //firebase
 var admin = require("firebase-admin");
+
+
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -14,6 +16,8 @@ admin.initializeApp({
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 const db = admin.database();
+//user id
+var userID = null;
 const pixelsRef = db.ref("pixels");
 
 const app = express();
@@ -96,19 +100,22 @@ app.post('/newuser', (req, res) => {
 //   password: "yyy",
 // }
 app.post('/userlogin', (req, res) => {
-  let resUserid = null;
-  db.ref('users').once('value')
-    .then((snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        if (childSnapshot.val().email === req.body.email &&
-            childSnapshot.val().password === req.body.password) {
-          resUserid = childSnapshot.key;
-        }
-    });
-  });
-  res.json({
-    userid: resUserid,
-  });
+
+  console.log("hello user info recived")
+
+  console.log(req.body.email);
+  console.log(req.body.password);
+  userID = req.body.id;
+  console.log(userID);
+  /*
+ admin.auth().getUserByEmail("samgivian2015@gmail.com") .then((userRecord) => {
+   console.log(userRecord.password)
+ }) .catch((error) => {
+   console.log('Error creating new user:', error);
+   reponse = error.message;
+ })
+ */
+  res.send("recieved")
 });
 
 app.listen(PORT, () => {

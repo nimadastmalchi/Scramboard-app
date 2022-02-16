@@ -1,6 +1,12 @@
 import { Modal, Button, Tabs, Tab, Alert } from 'react-bootstrap';
 import { React, useState } from 'react';
+import {
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+} from "firebase/auth";
 
+import { auth } from "../../firebaseCongfig";
 
 
 function LoginSignUpModal(props) {
@@ -18,24 +24,45 @@ function LoginSignUpModal(props) {
                 password: password,
             })
         })
-        .then(
-            response => (response.json())
-        )
-        .then((result) => {
-            if (result.message === "received") {
-                alert("Successful Sign up")
-                props.callbackuser(email);
-            }
-            else {
-                alert(result.message)
-                console.log(result.message);  
-            }
-        })
-        .catch((error) => console.log(error));
-
+            .then(
+                response => (response.json())
+            )
+            .then((result) => {
+                if (result.message === "received") {
+                    alert("Successful Sign up")
+                    props.callbackuser(email);
+                }
+                else {
+                    alert(result.message)
+                    console.log(result.message);
+                }
+            })
+            .catch((error) => console.log(error));
     }
 
     function onLogin() {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userRecord) => {
+                console.log(userRecord.user.uid)
+                console.log("logged in");
+                fetch('http://localhost:3001/userlogin', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        id:userRecord.user.uid
+                    })
+                })
+                    .then((res) => res.json())
+                    .catch((error) => console.log(error));
+            }).catch((error) => {
+                alert(error.message);
+            })
+
+
+        /*
         // send data to node
         fetch('http://localhost:3001/userlogin', {
             method: 'POST',
@@ -54,6 +81,7 @@ function LoginSignUpModal(props) {
             }
         })
         .catch((error) => console.log(error));
+        */
     }
 
     return (
@@ -94,7 +122,7 @@ function LoginSignUpModal(props) {
                                     </div>
                                 </div>
 
-                                <Button style={{ marginTop: '20px' }} type="submit" className="btn btn-dark btn-lg btn-block">Log in</Button>
+                                <Button style={{ marginTop: '20px' }} type="submit" className="btn btn-dark btn-lg btn-block" onClick={onLogin}>Log in</Button>
                                 <p className="forgot-password text-right">
                                     <a href="/">Forgot password?</a>
                                 </p>
