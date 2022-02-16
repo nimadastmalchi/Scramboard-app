@@ -44,7 +44,9 @@ function LoginSignUpModal(props) {
         signInWithEmailAndPassword(auth, email, password)
             .then((userRecord) => {
                 console.log(userRecord.user.uid)
-                console.log("logged in");
+                props.callbackuser(email);
+                alert("logged in")
+
                 fetch('http://localhost:3001/userlogin', {
                     method: 'POST',
                     mode: 'cors',
@@ -52,11 +54,11 @@ function LoginSignUpModal(props) {
                     body: JSON.stringify({
                         email: email,
                         password: password,
-                        id:userRecord.user.uid
+                        id: userRecord.user.uid
                     })
                 })
-                    .then((res) => res.json())
-                    .catch((error) => console.log(error));
+                .then((res) => res.json())
+                .catch((error) => console.log(error));
             }).catch((error) => {
                 alert(error.message);
             })
