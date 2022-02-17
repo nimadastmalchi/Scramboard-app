@@ -48,14 +48,20 @@ class Scramboard extends React.Component {
               <Board currentColor={this.state.color} />
             </div>
           </div>
-          <div className="profile">
-            <p>History</p>
-            <button
-              onClick={handleSubmit}>
-              submit
-            </button>
-            <div className="chatbox">
+
+          <div className="right_sidebar">
+            <div className="profile">
+              <p>History</p>
+              <button
+                onClick={handleSubmit}>
+                submit
+              </button>  
+            </div>
+            <div className="chat">
+          
+
               <ChatWindow/>
+          
             </div>
           </div>
         </div>

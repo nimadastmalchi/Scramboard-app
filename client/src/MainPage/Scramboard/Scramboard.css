@@ -14,12 +14,27 @@
   flex-direction: row;
 }
 
+.right_sidebar {
+  direction: 'row-reverse';
+  height: 100vh;
+}
+
 .profile {
   box-sizing: border-box;
   padding: 40px;
   text-align: center;
   direction: 'row-reverse';
-  width:20%;
+  width:100%;
   background-color: rgb(228, 92, 13) ;
-  height: 100vh;
+  height: 50vh;
+}
+
+.chat {
+  box-sizing: border-box;
+  padding: 40px;
+  text-align: left;
+  direction: 'row-reverse';
+  width: 100%;
+  background-color: blue;
+  height: 50vh; /* 50% of viewport will be chat */
 }
