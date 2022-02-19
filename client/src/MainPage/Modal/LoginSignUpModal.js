@@ -39,8 +39,8 @@ function LoginSignUpModal(props) {
             .then((userRecord) => {
                 console.log(userRecord.user.uid)
                 props.setuseremail(email);
-                alert("logged in")
-
+                props.triggerAlert(true, "Success", "Begin your editing journay", "You have successfully logged in !!")
+        
                 fetch('http://localhost:3001/userlogin', {
                     method: 'POST',
                     mode: 'cors',
@@ -51,33 +51,14 @@ function LoginSignUpModal(props) {
                         id: userRecord.user.uid
                     })
                 })
-                .then((res) => res.json())
-                .catch((error) => console.log(error));
+                    .then((res) => res.json())
+                    .catch((error) => {console.log(error)});
             }).catch((error) => {
-                alert(error.message);
+                console.log(error);
+                props.triggerAlert(true, "Failure", "Unsuccessful login attempt !!", error.message)
+               // alert(error.message);
             })
 
-
-        /*
-        // send data to node
-        fetch('http://localhost:3001/userlogin', {
-            method: 'POST',
-            mode: 'cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
-        })
-        .then((res) => res.json())
-        .then((res) => {
-            console.log(res.userid);
-            if (res.userid != null) {
-                props.setuseremail(email);
-            }
-        })
-        .catch((error) => console.log(error));
-        */
     }
 
     return (
