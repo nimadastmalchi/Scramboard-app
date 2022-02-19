@@ -13,7 +13,7 @@ const AlertMessage = (props) => {
                 <hr />
                 <div className="d-flex justify-content-end">
                     <Button onClick={() => props.hideAlert()} variant="outline-success">
-                        Close me y'all!
+                        Close
                     </Button>
                 </div>
             </Alert>
