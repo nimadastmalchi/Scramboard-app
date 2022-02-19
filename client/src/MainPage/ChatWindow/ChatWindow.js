@@ -10,23 +10,25 @@ function ChatWindow() {
 
     useEffect(() => {
         const newSocket = io(`http://${window.location.hostname}:3001`);
-        
+
         setSocket(newSocket);
         return () => newSocket.close();
-      }, [setSocket]);
+    }, [setSocket]);
 
-    return (
-        <div className="ChatWindow">
-            { socket ? (
-            <div className="chat-container">
+    // If socket is initialized, setup the chat window.
+    // Else, put a placeholder error message saying chat is not connected.
+    if (socket) {
+        return (
+            <div className='chat_window'>
                 <Messages socket={socket} />
                 <MessageInput socket={socket} />
             </div>
-            ) : (
+        );
+    } else {
+        return (
             <div>Not Connected</div>
-            )}
-        </div>
-    );
+        );
+    }
 }
 
 export default ChatWindow;

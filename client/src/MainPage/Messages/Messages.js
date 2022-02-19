@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Message from './Message'
 
 function Messages({ socket }) {
   const [messages, setMessages] = useState({});
@@ -7,12 +8,12 @@ function Messages({ socket }) {
     const messageListener = (message) => {
       console.log("received msg: " + message);
       setMessages((prevMessages) => {
-        const newMessages = {...prevMessages};
+        const newMessages = { ...prevMessages };
         newMessages[message.id] = message;
         return newMessages;
       });
     };
-  
+
     socket.on('message', messageListener);
     socket.emit('getMessages');
 
@@ -22,7 +23,7 @@ function Messages({ socket }) {
   }, [socket]);
 
   return (
-    <div className="messages">
+    <ul className="chat_messages">
       {[...Object.values(messages)]
         .sort((a, b) => a.time - b.time)
         .map((message) => (
@@ -31,12 +32,14 @@ function Messages({ socket }) {
             className="message-container"
             title={`Sent at ${new Date(message.time).toLocaleTimeString()}`}
           >
-            <span className="user">{message.username}:</span>
-            <span className="message">{message.message}</span>
+
+            {/* Maps every message recieved from backend into a Message component wrapped in*/}
+            {/* extra <div>*/}
+            <Message username={message.username} message={message.message} />
           </div>
         ))
       }
-    </div>
+    </ul>
   );
 }
 

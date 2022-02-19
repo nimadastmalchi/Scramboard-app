@@ -57,12 +57,9 @@ class Scramboard extends React.Component {
                 submit
               </button>  
             </div>
-            <div className="chat">
-          
+            
+            <ChatWindow/>
 
-              <ChatWindow/>
-          
-            </div>
           </div>
         </div>
       </div>

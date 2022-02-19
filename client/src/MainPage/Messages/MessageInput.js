@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-const MessageInput = ({socket}) => {
+const MessageInput = ({ socket }) => {
   const [value, setValue] = useState('');
 
   //TODO: change to passed in prop when adding auth
   const username = "Anonymous";
-  
+
   const submitForm = (e) => {
     e.preventDefault();
     const message = {
-        username: username,
-        message: value
+      username: username,
+      message: value
     }
     console.log("emit message: " + message);
     socket.emit('message', message);
@@ -26,6 +26,7 @@ const MessageInput = ({socket}) => {
         onChange={(e) => {
           setValue(e.currentTarget.value);
         }}
+        className='chat_input'
       />
     </form>
   );
