@@ -43,6 +43,7 @@ function LoginSignUpModal(props) {
                 console.log(userRecord.user.uid)
                 props.setuseremail(email);
                 props.triggerAlert(true, "Success", "Begin your editing journay", "You have successfully logged in")
+                
 
                 fetch('http://localhost:3001/userlogin', {
                     method: 'POST',
