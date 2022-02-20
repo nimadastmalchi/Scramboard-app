@@ -4,6 +4,7 @@ const MessageInput = ({ socket }) => {
   const [value, setValue] = useState('');
 
   //TODO: change to passed in prop when adding auth
+  // use username from index.js
   const username = "Anonymous";
 
   const submitForm = (e) => {
