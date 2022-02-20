@@ -16,7 +16,7 @@
 
 .right_sidebar {
   width: 20%;
-  height: 100vh;
+  height: 10vh;
 }
 
 .profile {
@@ -26,7 +26,7 @@
   direction: 'row-reverse';
   width:100%;
   background-color: rgb(228, 92, 13) ;
-  height: 50vh;
+  height: 40vh;
 }
 
 .chat_window {

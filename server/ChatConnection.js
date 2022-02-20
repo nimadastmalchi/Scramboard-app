@@ -18,7 +18,7 @@ class ChatConnection {
       console.log(`connect_error due to ${err.message}`);
     });
   }
-  
+
   sendMessage(message) {
     this.io.sockets.emit('message', message);
   }
