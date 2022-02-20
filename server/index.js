@@ -86,6 +86,7 @@ app.post('/newuser', (req, res) => {
       db.ref('users/' + userRecord.uid).set({
         email: req.body.email,
         password: req.body.password,
+        username:req.body.username
       });
       userID = userRecord.uid;
     })
