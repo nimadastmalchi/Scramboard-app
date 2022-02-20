@@ -1,8 +1,12 @@
 // server/index.js
 const express = require("express");
+const http = require('http');
+const cors = require('cors');
+
 const PORT = process.env.PORT || 3001;
 
-const init = require('./init.js')
+const init = require('./init.js');
+const chat = require('./ChatConnection.js');
 
 //firebase
 var admin = require("firebase-admin");
@@ -19,6 +23,7 @@ const db = admin.database();
 //user id
 var userID = null;
 const pixelsRef = db.ref("pixels");
+const chatRef = db.ref("chat");
 
 const app = express();
 
@@ -33,7 +38,6 @@ var jsonParser = bodyParser.json()
 
 app.use(jsonParser);
 
-const cors = require("cors");
 const corsOptions = {
   origin: '*',
   credentials: true,            //access-control-allow-credentials:true
@@ -64,7 +68,6 @@ app.post('/board', (req, res) => {
   res.send("received");
   db.ref('pixels/array/' + req.body.row + '/' + req.body.col + '/').set(req.body.new_color);
 });
-
 
 // ******** USER LOGIN/SIGNUP *********
 // Write to users
@@ -119,6 +122,22 @@ app.post('/userlogin', (req, res) => {
   res.send("recieved")
 });
 
-app.listen(PORT, () => {
+function initChat(io) {
+  io.on('connection', (socket) => {
+    new chat.ChatConnection(chatRef, io, socket);   
+  });
+};
+
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server,{
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
+initChat(io);
+
+server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

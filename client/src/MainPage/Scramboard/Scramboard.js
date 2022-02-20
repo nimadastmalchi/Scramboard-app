@@ -1,8 +1,9 @@
 import React from 'react';
 import './Scramboard.css';
 import Board from '../Board/Board';
-import CustomNavbar from '../CustomNavbar/CustomNavbar'
-import ColorPicker from '../ColorPicker/ColorPicker'
+import CustomNavbar from '../CustomNavbar/CustomNavbar';
+import ColorPicker from '../ColorPicker/ColorPicker';
+import ChatWindow from '../ChatWindow/ChatWindow';
 
 class Scramboard extends React.Component {
   constructor(props) {
@@ -33,12 +34,16 @@ class Scramboard extends React.Component {
               <Board currentColor={this.state.color} />
             </div>
           </div>
-          <div className="profile">
-            <p>History</p>
-            <button
-              onClick={() => console.log('TODO')}>
-              submit
-            </button>
+          <div className="right_sidebar">
+            <div className="profile">
+              <p>History</p>
+              <button
+                onClick={() => console.log("clicked")}>
+                submit
+              </button>  
+            </div>
+            
+          <ChatWindow/>
           </div>
         </div>
       </div>
