@@ -4,10 +4,11 @@ import Board from '../Board/Board';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ChatWindow from '../ChatWindow/ChatWindow';
-
+import {  Button } from 'react-bootstrap';
+import UserAvatar from 'react-user-avatar'
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
-  const [username, setUsername] = useState(null); // null means no user logged in
+  const [username, setUsername] = useState("Anon"); // null means no user logged in
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
@@ -18,6 +19,7 @@ const Scramboard = (props) => {
     setColor(color.hex);
   }
 
+  
   return (
     <div>
       <CustomNavbar/>
@@ -30,11 +32,13 @@ const Scramboard = (props) => {
         </div>
         <div className="right_sidebar">
           <div className="profile">
-            <p>History</p>
-            <button
-              onClick={() => console.log("clicked")}>
-              submit
-            </button>  
+            <span  class="Avatar">
+            <UserAvatar size="128" name={username} color={"rgb("+Math.random() * (255)+","+Math.random() * (255)+","+Math.random() * (255)+")"}/>
+            </span>
+        
+            <p>Birthdate:</p>
+            <p>Number of comments: </p>
+            <Button variant="dark">Change Password</Button>{' '}
           </div>
           
         <ChatWindow/>

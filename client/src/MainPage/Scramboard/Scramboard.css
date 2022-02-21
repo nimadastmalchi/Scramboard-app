@@ -19,15 +19,23 @@
   height: 10vh;
 }
 
+/********* Profile **********/
 .profile {
   box-sizing: border-box;
   padding: 40px;
   text-align: center;
   direction: 'row-reverse';
-  width:100%;
-  background-color: rgb(228, 92, 13) ;
+  width: 100%;
+  background-color: rgb(228, 92, 13);
   height: 40vh;
 }
+
+.Avatar {
+  display: inline-block;
+  /* float:left;  remove */
+  margin: 5px 5px 0 0;
+  font-size: 64px;
+} 
 
 .chat_window {
   margin: 0;
@@ -53,9 +61,11 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: 40vh;     /* Gives the chat message history section a fix height; enables scrolling */
-  overflow: auto;   /* Automatically enables scrollbar when needed */
-  
+  height: 40vh;
+  /* Gives the chat message history section a fix height; enables scrolling */
+  overflow: auto;
+  /* Automatically enables scrollbar when needed */
+
 }
 
 /*
