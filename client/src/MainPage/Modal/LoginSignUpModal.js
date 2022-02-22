@@ -56,7 +56,7 @@ function LoginSignUpModal(props) {
                     .catch((error) => {console.log(error)});
             }).catch((error) => {
                 console.log(error);
-                props.triggerAlert(true, "Failure", "Unsuccessful login attempt", error.message)
+                props.triggerAlert(true, "Failure", "Unsuccessful login attempt", "Wrong email or password");
                // alert(error.message);
             })
 

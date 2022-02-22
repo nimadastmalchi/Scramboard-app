@@ -18,6 +18,7 @@ const CustomNavbar = (props) => {
   function alertHide(){
     setShowAlert(false);
   }
+
   function signOutUser() {
     setSignOutShow(false); // ensure signout is not shown next time
     setUserEmail("");
@@ -44,11 +45,13 @@ const CustomNavbar = (props) => {
           Login/SignUp
         </Button>
         <LoginSignUpModal
-          triggerAlert={(condition, type, message,messageHeader) => {
-            setShowAlertType(type)
-            setShowAlertMessage(message)
+          triggerAlert={(condition, type, message, messageHeader) => {
+            setLoginSignUpShow(false);
+            setSignOutShow(false);
+            setShowAlertType(type);
+            setShowAlertMessage(message);
             setShowAlert(condition);
-            setShowAlertMessageHeader(messageHeader)
+            setShowAlertMessageHeader(messageHeader);
           }}
           
           setuseremail={(email) => {
