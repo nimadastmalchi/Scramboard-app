@@ -22,6 +22,8 @@ admin.initializeApp({
 const db = admin.database();
 //user id
 var userID = null;
+//username
+var username = null;
 const pixelsRef = db.ref("pixels");
 const chatRef = db.ref("chat");
 
@@ -78,16 +80,19 @@ app.post('/board', (req, res) => {
 // }
 app.post('/newuser', (req, res) => {
   let reponse = "received";
+
   admin.auth().createUser({
     email: req.body.email,
     password: req.body.password,
-  })
-    .then((userRecord) => {
+  }).then(
+    (userRecord) => {
       db.ref('users/' + userRecord.uid).set({
         email: req.body.email,
         password: req.body.password,
+        username: req.body.username
       });
       userID = userRecord.uid;
+      username=req.body.username;
     })
     .catch((error) => {
       console.log('Error creating new user:', error);
@@ -111,26 +116,23 @@ app.post('/userlogin', (req, res) => {
   console.log(req.body.password);
   userID = req.body.id;
   console.log(userID);
-  /*
- admin.auth().getUserByEmail("samgivian2015@gmail.com") .then((userRecord) => {
-   console.log(userRecord.password)
- }) .catch((error) => {
-   console.log('Error creating new user:', error);
-   reponse = error.message;
- })
- */
+  //fetchs user's data upon login
+  db.ref('users/' + userID).on('value', (snapshot) => {
+    const data = snapshot.val();
+    username = data.username;
+  });
   res.send("recieved")
 });
 
 function initChat(io) {
   io.on('connection', (socket) => {
-    new chat.ChatConnection(chatRef, io, socket);   
+    new chat.ChatConnection(chatRef, io, socket);
   });
 };
 
 const server = http.createServer(app);
 const { Server } = require('socket.io');
-const io = new Server(server,{
+const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']

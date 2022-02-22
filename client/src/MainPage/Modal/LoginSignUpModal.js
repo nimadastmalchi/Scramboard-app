@@ -6,6 +6,7 @@ import { auth } from "../../firebaseCongfig";
 function LoginSignUpModal(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
 
     function onSignup() {
         // send data to node
@@ -16,6 +17,7 @@ function LoginSignUpModal(props) {
             body: JSON.stringify({
                 email: email,
                 password: password,
+                username: username
             })
         })
             .then(
@@ -41,7 +43,8 @@ function LoginSignUpModal(props) {
                 console.log(userRecord.user.uid)
                 props.setuseremail(email);
                 props.triggerAlert(true, "Success", "Begin your editing journay", "You have successfully logged in")
-        
+                
+
                 fetch('http://localhost:3001/userlogin', {
                     method: 'POST',
                     mode: 'cors',
@@ -53,7 +56,7 @@ function LoginSignUpModal(props) {
                     })
                 })
                     .then((res) => res.json())
-                    .catch((error) => {console.log(error)});
+                    .catch((error) => { console.log(error) });
             }).catch((error) => {
                 console.log(error);
                 props.triggerAlert(true, "Failure", "Unsuccessful login attempt", "Wrong email or password");
@@ -109,6 +112,12 @@ function LoginSignUpModal(props) {
 
                         <Tab eventKey="SignUp" title="SignUp">
                             <form onSubmit={(event) => event.preventDefault()}>
+
+                                <div className="form-group">
+                                    <label>Username</label>
+                                    <input className="form-control" placeholder="Enter Username" onChange={(event) => setUsername(event.target.value)} />
+                                </div>
+
                                 <div className="form-group">
                                     <label>Email</label>
                                     <input type="email" className="form-control" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
@@ -136,18 +145,3 @@ function LoginSignUpModal(props) {
     );
 }
 export default LoginSignUpModal;
-
-
-/*
-
-
-<<<<<<< HEAD
-                            <Button style={{marginTop:'20px'}} type="submit" className="btn btn-dark btn-lg btn-block" onClick={onLogin}>Log in</Button>
-                            <p className="forgot-password text-right">
-                                <a href="/">Forgot password?</a>
-                            </p>
-                        </form>
-                    </Tab>
-=======
-
-*/
