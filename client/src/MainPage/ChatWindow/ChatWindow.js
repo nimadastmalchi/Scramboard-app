@@ -5,7 +5,7 @@ import MessageInput from '../Messages/MessageInput';
 
 const SERVER_PORT = 3001;
 
-function ChatWindow() {
+function ChatWindow(props) {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ function ChatWindow() {
         return (
             <div className='chat_window'>
                 <Messages socket={socket} />
-                <MessageInput socket={socket} />
+                <MessageInput socket={socket} username={props.username}/>
             </div>
         );
     } else {

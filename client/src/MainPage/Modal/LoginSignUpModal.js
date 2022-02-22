@@ -26,7 +26,7 @@ function LoginSignUpModal(props) {
             .then((result) => {
                 if (result.message === "received") {
                     props.triggerAlert(true, "Success", "Welcome", "You have successfully signed up");
-                    props.setuseremail(email);
+                    props.setusername(username);
                 }
                 else {
                     props.triggerAlert(true, "Failure", "Unsuccessful signed up attempt. Please try again later.", result.message)
@@ -40,10 +40,9 @@ function LoginSignUpModal(props) {
     function onLogin() {
         signInWithEmailAndPassword(auth, email, password)
             .then((userRecord) => {
-                console.log(userRecord.user.uid)
-                props.setuseremail(email);
+                console.log(userRecord.user.uid);
+                props.setusername(auth.currentUser.displayName);
                 props.triggerAlert(true, "Success", "Begin your editing journay", "You have successfully logged in")
-                
 
                 fetch('http://localhost:3001/userlogin', {
                     method: 'POST',
@@ -62,7 +61,6 @@ function LoginSignUpModal(props) {
                 props.triggerAlert(true, "Failure", "Unsuccessful login attempt", "Wrong email or password");
                // alert(error.message);
             })
-
     }
 
     return (

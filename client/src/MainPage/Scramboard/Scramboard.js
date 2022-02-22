@@ -20,7 +20,10 @@ const Scramboard = (props) => {
 
   return (
     <div>
-      <CustomNavbar/>
+      <CustomNavbar 
+        setusername={setUsername} 
+        getusername={() => username}
+      />
       <div className="scram">
         <div className="scram-div">
           <ColorPicker onColorChangeComplete={handleColorChangeComplete} />
@@ -37,7 +40,7 @@ const Scramboard = (props) => {
             </button>  
           </div>
           
-        <ChatWindow/>
+        <ChatWindow username={username}/>
         </div>
       </div>
     </div>

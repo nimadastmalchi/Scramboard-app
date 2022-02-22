@@ -8,7 +8,6 @@ const CustomNavbar = (props) => {
 
   const [loginSignUpShow, setLoginSignUpShow] = useState(false);
   const [signOutShow, setSignOutShow] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
 
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertType, setShowAlertType] = useState("");
@@ -21,15 +20,15 @@ const CustomNavbar = (props) => {
 
   function signOutUser() {
     setSignOutShow(false); // ensure signout is not shown next time
-    setUserEmail("");
+    props.setusername(null);
   }
 
   function UserInfo() {
-    if (userEmail !== "") {
+    if (props.getusername() != null) {
       return (
         <Navbar.Brand>
           <Button variant="primary" onClick={() => setSignOutShow(true)}>
-            {userEmail}
+            {props.getusername()}
           </Button>
           <SignOutModal
             signoutuser={signOutUser}
@@ -54,10 +53,11 @@ const CustomNavbar = (props) => {
             setShowAlertMessageHeader(messageHeader);
           }}
           
-          setuseremail={(email) => {
-            setUserEmail(email);
+          setusername={(username) => {
+            props.setusername(username);
             setLoginSignUpShow(false); // ensure login is not shown next time
           }}
+
           show={loginSignUpShow}
           onHide={() => setLoginSignUpShow(false)}
         />
