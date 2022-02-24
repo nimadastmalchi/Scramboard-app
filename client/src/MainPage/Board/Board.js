@@ -43,7 +43,7 @@ class Board extends React.Component {
         col: j,
         new_color: this.props.currentColor,
       })
-    }).then((data) => data.json()).catch((error) => console.log(error));
+    }).then((data) => data.json()).catch((error) => console.log("Error: " + error));
   }
 
   renderPixel(i, j) {
@@ -58,11 +58,11 @@ class Board extends React.Component {
   render() {
     const rows = Array(this.state.numRows).fill(null);
     for (let i = 0; i < this.state.numRows; ++i) {
-      const pixel_elements = Array(this.state.numCols).fill(null);
+      const pixelElements = Array(this.state.numCols).fill(null);
       for (let j = 0; j < this.state.numCols; ++j) {
-        pixel_elements[j] = this.renderPixel(i, j);
+        pixelElements[j] = this.renderPixel(i, j);
       }
-      rows[i] = <div key={i} className="board-row">{pixel_elements}</div>;
+      rows[i] = <div key={i} className="board-row">{pixelElements}</div>;
     }
     return (
       <div>{rows}</div>

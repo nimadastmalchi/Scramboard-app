@@ -49,9 +49,6 @@ app.use(cors(corsOptions)) // Use this after the variable declaration
 app.get('/board', (req, res) => {
   pixelsRef.get().then((data) => {
     val = data.val();
-    if (val === 0) {
-      return;
-    }
     return res.json(val);
   });
 });
@@ -64,7 +61,7 @@ app.get('/board', (req, res) => {
 //    new_color: "#rrggbb"|"#rgb",
 // }
 app.post('/board', (req, res) => {
-  res.send("received");
+  res.json("received");
   db.ref('pixels/array/' + req.body.row + '/' + req.body.col + '/').set(req.body.new_color);
 });
 
@@ -115,7 +112,7 @@ app.post('/userlogin', (req, res) => {
    reponse = error.message;
  })
  */
-  res.send("recieved");
+  res.json("recieved");
 });
 
 function initChat(io) {

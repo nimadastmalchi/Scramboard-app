@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 const MessageInput = (props) => {
   const [value, setValue] = useState('');
 
-  //TODO: change to passed in prop when adding auth
-  // use username from index.js
   const username = props.username == null ? "Anonymous" : props.username;
 
   const submitForm = (e) => {
