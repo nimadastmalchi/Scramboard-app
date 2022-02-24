@@ -7,11 +7,18 @@ function Messages({ socket }) {
   useEffect(() => {
     const messageListener = (message) => {
       console.log("received msg: " + message);
+
       setMessages((prevMessages) => {
         const newMessages = { ...prevMessages };
         newMessages[message.id] = message;
         return newMessages;
       });
+
+
+      // Whenever a new message is added, scroll to the
+      // bottom of the chat message history.
+      let chatMessageHistory = document.getElementById("chatMessageHistory");
+      chatMessageHistory.scrollTo(0, chatMessageHistory.scrollHeight);
     };
 
     socket.on('message', messageListener);
@@ -23,7 +30,7 @@ function Messages({ socket }) {
   }, [socket]);
 
   return (
-    <ul className="chat_messages">
+    <ul id="chatMessageHistory" className="chat_messages">
       {[...Object.values(messages)]
         .sort((a, b) => a.time - b.time)
         .map((message) => (
@@ -32,7 +39,6 @@ function Messages({ socket }) {
             className="message-container"
             title={`Sent at ${new Date(message.time).toLocaleTimeString()}`}
           >
-
             {/* Maps every message recieved from backend into a Message component wrapped in*/}
             {/* extra <div>*/}
             <Message username={message.username} message={message.message} />
