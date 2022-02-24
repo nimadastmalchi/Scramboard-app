@@ -12,7 +12,7 @@ const CustomNavbar = (props) => {
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertType, setShowAlertType] = useState("");
   const [showAlertMessage, setShowAlertMessage] = useState("");
-  const[showAlertMessageHeader,setShowAlertMessageHeader]=useState("");
+  const [showAlertMessageHeader, setShowAlertMessageHeader] = useState("");
   
   function alertHide(){
     setShowAlert(false);

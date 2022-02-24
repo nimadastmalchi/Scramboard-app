@@ -28,7 +28,7 @@ const Scramboard = (props) => {
         <div className="scram-div">
           <ColorPicker onColorChangeComplete={handleColorChangeComplete} />
           <div className="scram-board">
-            <Board currentColor={color} />
+            <Board currentColor={color} userLoggedIn={username != null}/>
           </div>
         </div>
         <div className="right_sidebar">

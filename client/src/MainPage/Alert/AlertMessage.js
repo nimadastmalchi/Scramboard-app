@@ -1,5 +1,5 @@
 import { Alert, Button } from 'react-bootstrap';
-import { React, useState,useEffect } from 'react';
+import { React, useState } from 'react';
 
 const AlertMessage = (props) => {
     const [show, setShow] = useState(true);

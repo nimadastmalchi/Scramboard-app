@@ -1,6 +1,7 @@
 // Board.js
 import Pixel from '../Pixel/Pixel';
 import React from 'react';
+import AlertMessage from '../Alert/AlertMessage'
 
 class Board extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class Board extends React.Component {
       numRows: 50,
       numCols: 50,
       pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
+      showAlert: false,
     };
 
     this.setBoardFromDB();
@@ -30,6 +32,11 @@ class Board extends React.Component {
   }
 
   handleClick(i, j) {
+    if (!this.props.userLoggedIn) {
+      this.setState({showAlert:true});
+      return; // ignore click
+    }
+
     this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
     this.setState({});
 
@@ -64,73 +71,21 @@ class Board extends React.Component {
       }
       rows[i] = <div key={i} className="board-row">{pixelElements}</div>;
     }
+
+    let alertMessage = 'Please Log-in to Edit the Board'
+
     return (
-      <div>{rows}</div>
+      <div>
+        {this.state.showAlert ? 
+              <AlertMessage condition={"Failure"} 
+                            message={alertMessage}
+                            showAlert={true} 
+                            hideAlert={() => this.setState({showAlert:false})} 
+              /> : rows
+        }
+      </div>
     );
   }
 }
-
-/*
-// Known issue: fetch is setBoardFromDB() does not work (???)
-const Board = (props) => {
-  const [numRows, setNumRows] = useState(50);
-  const [numCols, setNumCols] = useState(50);
-  const [pixels, setPixels] = useState(Array.from(Array(50), () => Array(50).fill('#ffffff')));
-
-  const setBoardFromDB = () => {
-    // get data from node
-    fetch("http://localhost:3001/board/")
-      .then((res) => {
-          res.json();
-          console.log(res);
-      })
-      .then((data) => {
-        setNumRows(data.num_rows);
-        setNumCols(data.num_cols);
-        setPixels(data.array);
-      });
-  }
-
-  setBoardFromDB();
-  setInterval(() => setBoardFromDB(), 5000);
-
-  const handleClick=(i, j)=> {
-    pixels[i][j] = props.currentColor;
-    setNumRows(numRows);
-    // send data to node
-    fetch('http://localhost:3001/board', {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        row: i,
-        col: j,
-        new_color: props.currentColor,
-      })
-    }).then((data) => data.json()).catch((error) => console.log(error));
-  }
-
-  const renderPixel = (i, j) => {
-    return (
-      <Pixel
-        onClick={() => handleClick(i, j)}
-        color={pixels[i][j]}
-      />
-    );
-  }
-
-  const rows = Array(numRows).fill(null);
-  for (let i = 0; i < numRows; ++i) {
-    const pixelElements = Array(numCols).fill(null);
-    for (let j = 0; j < numCols; ++j) {
-      pixelElements[j] = renderPixel(i, j);
-    }
-    rows[i] = <div key={i} className="board-row">{pixelElements}</div>;
-  }
-  return (
-    <div>{rows}</div>
-  )
-}
-*/
 
 export default Board;
