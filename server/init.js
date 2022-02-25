@@ -3,9 +3,9 @@
 
 function validatePixels(pixelsRef, numRows, numCols) {
   pixelsRef.get().then((data) => {
-    val = data.val();
+    const val = data.val();
     console.log("Value of pixels: " + val);
-    if (val === null) {
+    if (val == null) {
       const pixels = Array.from(Array(numRows), () => Array(numCols).fill('#ffffff'));
       for (let i = 0; i < numRows; ++i) {
         for (let j = 0; j < numCols; ++j) {
@@ -21,4 +21,23 @@ function validatePixels(pixelsRef, numRows, numCols) {
   });
 }
 
-module.exports = { validatePixels }
+function validateHistory(historyRef) {
+  historyRef.get().then((snapshot) => {
+    if (snapshot.exists()) {
+      console.log("history snapshot exists");
+      const historyVal = snapshot.val();
+      if (historyVal.currentSize != null && historyVal.clicks != null) {
+        console.log("valid history snapshot");
+        return;
+      }
+    }
+    // at this point, historyRef is not valid.
+    console.log("invalid hisotry snapshot");
+    historyRef.set({
+      currentSize: 1,
+      clicks: [["0,0", "#ffffff"]]
+    });
+  });
+}
+
+module.exports = { validatePixels, validateHistory }

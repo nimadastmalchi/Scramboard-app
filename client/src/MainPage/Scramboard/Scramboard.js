@@ -4,11 +4,16 @@ import Board from '../Board/Board';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ChatWindow from '../ChatWindow/ChatWindow';
-import {  Button } from 'react-bootstrap';
 import UserAvatar from 'react-user-avatar'
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
   const [username, setUsername] = useState(null); // null means no user logged in
+
+  // the clickNumber in the form
+  const [clickNumber, setClickNumber] = useState('');
+
+  // the clickNumber submitted
+  const [submittedClickNumber, setSubmittedClickNumber] = useState('');
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
@@ -18,7 +23,7 @@ const Scramboard = (props) => {
   const handleColorChangeComplete = (color) => {
     setColor(color.hex);
   }
-  
+
   return (
     <div>
       <CustomNavbar 
@@ -27,15 +32,32 @@ const Scramboard = (props) => {
       />
       <div className="scram">
         <div className="scram-div">
-          <ColorPicker onColorChangeComplete={handleColorChangeComplete} />
-          <div className="scram-board">
-            <Board currentColor={color} userLoggedIn={username != null}/>
+
+          <ColorPicker className="color_picker" onColorChangeComplete={handleColorChangeComplete} />
+
+          <div className="snapshot_selector" >
+            <label>
+              Enter a click number to travel back to:
+              <input type="text" onChange={(event) => setClickNumber(event.target.value)}/>
+            </label>
+            <button type="submit" value="Submit" onClick={() => {
+              setSubmittedClickNumber(clickNumber)
+              console.log(submittedClickNumber); }
+            }/>
           </div>
+
+          <div className="scram-board">
+            <Board currentColor={color} 
+                   userLoggedIn={username != null}
+                   clickNumber={submittedClickNumber}/>
+          </div>
+
         </div>
+
         <div className="right_sidebar">
           { username != null ?
             <div className="profile"> 
-                <span  class="Avatar">
+                <span  className="Avatar">
                   <UserAvatar 
                     size="128" 
                     name={username} 
@@ -51,7 +73,9 @@ const Scramboard = (props) => {
               <p>Welcome!</p>
             </div>
           }
+
           <ChatWindow username={username}/>
+
         </div>
       </div>
     </div>

@@ -68,6 +68,14 @@
 
 }
 
+.snapshot_selector {
+  width:40%;
+  height:200px;
+  position: relative;
+  top: 315px;
+  left: 0px;
+}
+
 /*
 Eric Florin: 2/18/22 4:44 PM
 

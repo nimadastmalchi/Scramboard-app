@@ -11,29 +11,56 @@ class Board extends React.Component {
       numRows: 50,
       numCols: 50,
       pixels: Array.from(Array(50), () => Array(50).fill('#ffffff')), // initially white
-      showAlert: false,
+      showLoggedOutAlert: false,
+      showSnapshotAlert: false,
     };
 
+    console.log('constructed');
     this.setBoardFromDB();
     setInterval(() => this.setBoardFromDB(), 5000);
   }
 
   setBoardFromDB() {
+    console.log(this.props.clickNumber);
     // get data from node
-    fetch("http://localhost:3001/board/")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({
-          num_rows: data.num_rows,
-          num_cols: data.num_cols,
-          pixels: data.array,
+    if (this.props.clickNumber == '') {
+      fetch("http://localhost:3001/board/")
+        .then((res) => res.json())
+        .then((data) => {
+          this.setState({
+            num_rows: data.num_rows,
+            num_cols: data.num_cols,
+            pixels: data.array,
+          });
         });
-      });
+    }
+    else {
+      fetch('http://localhost:3001/snapshot', {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clickNumber: this.props.clickNumber
+        })
+      }).then((data) => data.json())
+        .then((json) => {
+          this.setState({
+            num_rows: this.state.numRows,
+            num_cols: this.state.numCols,
+            pixels: json.array
+          })
+        })
+        .catch((error) => console.log("Error: " + error));
+    }
   }
 
   handleClick(i, j) {
+    if (this.props.clickNumber != '') {
+      this.setState({showSnapshotAlert:true});
+      return; // ignore cick
+    }
     if (!this.props.userLoggedIn) {
-      this.setState({showAlert:true});
+      this.setState({showLoggedOutAlert:true});
       return; // ignore click
     }
 
@@ -72,16 +99,23 @@ class Board extends React.Component {
       rows[i] = <div key={i} className="board-row">{pixelElements}</div>;
     }
 
-    let alertMessage = 'Please Log-in to Edit the Board'
+    let loggedOutAlertMessage = 'Please Log-in to Edit the Board'
+    let snapshotAlertMessage = 'You are viewing a snapshot; go back to present board'
 
     return (
       <div>
-        {this.state.showAlert ? 
+        {this.state.showSnapshotAlert ? 
+          <AlertMessage condition={"Failure"}
+                        message={snapshotAlertMessage}
+                        showAlert={true} 
+                        hideAlert={() => this.setState({showSnapshotAlert:false})}
+          /> :
+           (this.state.showLoggedOutAlert ? 
               <AlertMessage condition={"Failure"} 
-                            message={alertMessage}
+                            message={loggedOutAlertMessage}
                             showAlert={true} 
-                            hideAlert={() => this.setState({showAlert:false})} 
-              /> : rows
+                            hideAlert={() => this.setState({showLoggedOutAlert:false})} 
+              /> : rows)
         }
       </div>
     );

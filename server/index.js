@@ -11,7 +11,6 @@ const chat = require('./ChatConnection.js');
 //firebase
 var admin = require("firebase-admin");
 
-
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -22,6 +21,7 @@ admin.initializeApp({
 const db = admin.database();
 //user id
 const pixelsRef = db.ref("pixels");
+const historyRef = db.ref("history");
 const chatRef = db.ref("chat");
 
 const app = express();
@@ -30,6 +30,7 @@ const app = express();
 const NUM_ROWS = 50;
 const NUM_COLS = 50;
 init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
+init.validateHistory(historyRef);
 
 // Utils for reading JSON:
 var bodyParser = require('body-parser')
@@ -53,6 +54,55 @@ app.get('/board', (req, res) => {
   });
 });
 
+// Read from db and return a specific snapshot of the board
+// req must be of form:
+// req = {
+//     clickNumber : [INTEGER]
+// }
+// This API returns the state of the board after the board
+// was clicked for the clickNumber(th) time.
+// E.g., if clickNumber = 5, return the state of the
+// board after the board was clicked for the 5th time.
+app.post('/snapshot', (req, res) => {
+  const clickNumber = req.body.clickNumber;
+  if (clickNumber == null) {
+    res.json({
+      array: null
+    });
+  }
+  else {
+    historyRef.get().then((snapshot) => {
+      const currentSize = snapshot.val().currentSize;
+      if (clickNumber >= currentSize) {
+        res.json({
+          array: null
+        });
+      }
+      else {
+        const clicks = snapshot.val().clicks;
+        if (clicks == null) {
+          console.log('invalid history snapshot (clicks) after initialization');
+          process.exit(1);
+        }
+
+        // construct the board snapshot:
+        const newBoard = Array.from(Array(NUM_ROWS), () => Array(NUM_COLS).fill('#ffffff'));
+        for (let i = 0; i <= clickNumber; ++i) {
+          const point = clicks[i][0];
+          const xy = point.split(',');
+          x = parseInt(xy[0]);
+          y = parseInt(xy[1]);
+          const color = clicks[i][1];
+          newBoard[x][y] = color;
+        }
+        res.json({
+          array: newBoard
+        })
+      }
+    })
+  }
+});
+
 // Write to board
 // Request must be of form:
 // {
@@ -63,6 +113,17 @@ app.get('/board', (req, res) => {
 app.post('/board', (req, res) => {
   res.json("received");
   db.ref('pixels/array/' + req.body.row + '/' + req.body.col + '/').set(req.body.new_color);
+  historyRef.get().then((snapshot) => {
+    const currentSize = snapshot.val().currentSize;
+    if (currentSize == null) {
+      console.log('Invalid history snapshot after initialization');
+      process.exit(1);
+    }
+    db.ref('history/clicks/' + currentSize).set(
+      [req.body.row + ',' + req.body.col, req.body.new_color]
+    );
+    db.ref('history/currentSize').set(currentSize + 1);
+  });
 });
 
 // ******** USER LOGIN/SIGNUP *********
