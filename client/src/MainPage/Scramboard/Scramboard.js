@@ -8,7 +8,7 @@ import {  Button } from 'react-bootstrap';
 import UserAvatar from 'react-user-avatar'
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
-  const [username, setUsername] = useState("Anon"); // null means no user logged in
+  const [username, setUsername] = useState(null); // null means no user logged in
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
@@ -18,7 +18,6 @@ const Scramboard = (props) => {
   const handleColorChangeComplete = (color) => {
     setColor(color.hex);
   }
-
   
   return (
     <div>
@@ -34,17 +33,25 @@ const Scramboard = (props) => {
           </div>
         </div>
         <div className="right_sidebar">
-          <div className="profile">
-            <span  class="Avatar">
-            <UserAvatar size="128" name={username} color={"rgb("+Math.random() * (255)+","+Math.random() * (255)+","+Math.random() * (255)+")"}/>
-            </span>
-        
-            <p>Birthdate:</p>
-            <p>Number of comments: </p>
-            <Button variant="dark">Change Password</Button>{' '}
-          </div>
-          
-        <ChatWindow username={username}/>
+          { username != null ?
+            <div className="profile"> 
+                <span  class="Avatar">
+                  <UserAvatar 
+                    size="128" 
+                    name={username} 
+                    color={"rgb("+Math.random() * (255)+","+Math.random() * (255)+","+Math.random() * (255)+")"}
+                  />
+                </span>
+            
+                <p>Birthdate: </p>
+                <p>Number of comments: </p>
+            </div>
+          : 
+            <div className="profile">
+              <p>Welcome!</p>
+            </div>
+          }
+          <ChatWindow username={username}/>
         </div>
       </div>
     </div>
