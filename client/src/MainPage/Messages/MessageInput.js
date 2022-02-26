@@ -31,7 +31,13 @@ const MessageInput = (props) => {
       </form>
     );
   } else {
-      return(<div></div>)
+      return(<div style={{textAlign: "center",
+                          margin: "auto",
+                          border: "3px solid red",
+                          padding: "19px",
+              }}> 
+                  <strong>Please log-in to chat</strong>
+             </div>)
   }
 };
 
