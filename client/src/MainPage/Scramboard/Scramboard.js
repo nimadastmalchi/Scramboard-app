@@ -12,7 +12,7 @@ const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
   const [username, setUsername] = useState(null); // null means no user logged in
   const [numSnapshots, setNumSnapshots] = useState(0);
-
+  const [avatarColor,setAvatarColor]=useState("rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")")
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
 
@@ -92,7 +92,7 @@ const Scramboard = (props) => {
                 <UserAvatar
                   size="128"
                   name={username}
-                  color={"rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")"}
+                  color={avatarColor}
                 />
               </span>
 
