@@ -4,6 +4,7 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LoginSignUpModal from '../Modal/LoginSignUpModal';
 import SignOutModal from '../Modal/SignOutModal';
 import AlertMessage from '../Alert/AlertMessage';
+import './CustomNavbar.css'
 const CustomNavbar = (props) => {
 
   const [loginSignUpShow, setLoginSignUpShow] = useState(false);
@@ -67,7 +68,7 @@ const CustomNavbar = (props) => {
   }
   return (
     <div>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="dark" variant="dark" className='Custom-navbar'>
         <Container>
           <Navbar.Brand href="/">
             Scramboard

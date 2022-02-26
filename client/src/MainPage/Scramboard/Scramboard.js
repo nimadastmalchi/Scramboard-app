@@ -5,6 +5,7 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import UserAvatar from 'react-user-avatar';
+import Footer from '../Footer/footer'
 import 'scrollable-component';
 
 const Scramboard = (props) => {
@@ -39,21 +40,21 @@ const Scramboard = (props) => {
 
   const getSnapshotButtons = () => {
     const listElements = Array(numSnapshots).fill(null);
-    listElements[0] = <button key={0} 
-                        className="snapshot_element"
-                        onClick={() => {
-                          setClickNumber('');
-                        }}>
-                          Live Board
-                      </button>
+    listElements[0] = <button key={0}
+      className="snapshot_element"
+      onClick={() => {
+        setClickNumber('');
+      }}>
+      Live Board
+    </button>
     for (let i = 2; i <= numSnapshots; ++i) {
-      listElements[i] = 
-        <button key={i} 
-                className="snapshot_element"
-                onClick={() => {
-                  setClickNumber(numSnapshots - i);
-                }}>
-                  Snapshot {numSnapshots - i}
+      listElements[i] =
+        <button key={i}
+          className="snapshot_element"
+          onClick={() => {
+            setClickNumber(numSnapshots - i);
+          }}>
+          Snapshot {numSnapshots - i}
         </button>
     }
     return listElements;
@@ -61,8 +62,8 @@ const Scramboard = (props) => {
 
   return (
     <div>
-      <CustomNavbar 
-        setusername={setUsername} 
+      <CustomNavbar
+        setusername={setUsername}
         getusername={() => username}
       />
       <div className="scram">
@@ -76,38 +77,39 @@ const Scramboard = (props) => {
           </scrollable-component>
 
           <div className="scram-board">
-            <Board currentColor={color} 
-                    userLoggedIn={username != null}
-                    clickNumber={clickNumber}
+            <Board currentColor={color}
+              userLoggedIn={username != null}
+              clickNumber={clickNumber}
             />
           </div>
 
         </div>
 
         <div className="right_sidebar">
-          { username != null ?
-            <div className="profile"> 
-                <span  className="Avatar">
-                  <UserAvatar 
-                    size="128" 
-                    name={username} 
-                    color={"rgb("+Math.random() * (255)+","+Math.random() * (255)+","+Math.random() * (255)+")"}
-                  />
-                </span>
-            
-                <p>Birthdate: </p>
-                <p>Number of comments: </p>
+          {username != null ?
+            <div className="profile">
+              <span className="Avatar">
+                <UserAvatar
+                  size="128"
+                  name={username}
+                  color={"rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")"}
+                />
+              </span>
+
+              <p>Birthdate: </p>
+              <p>Number of comments: </p>
             </div>
-          : 
+            :
             <div className="profile">
               <p>Welcome!</p>
             </div>
           }
 
-          <ChatWindow username={username}/>
+          <ChatWindow username={username} />
 
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
