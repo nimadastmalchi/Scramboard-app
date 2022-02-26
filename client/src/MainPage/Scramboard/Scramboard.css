@@ -69,6 +69,20 @@
 
 }
 
+.snapshot_list {
+  left: 10px;
+  height: 240px;
+  top: 315px;
+  width: 240px;
+  background-color: #c0c0c0
+}
+
+.snapshot_element {
+  margin: 0 auto;
+  display: block;
+  margin-top: 10px;
+}
+
 .snapshot_selector {
   width:40%;
   height:200px;

@@ -4,16 +4,29 @@ import Board from '../Board/Board';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ChatWindow from '../ChatWindow/ChatWindow';
-import UserAvatar from 'react-user-avatar'
+import UserAvatar from 'react-user-avatar';
+import 'scrollable-component';
+
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
   const [username, setUsername] = useState(null); // null means no user logged in
+  const [numSnapshots, setNumSnapshots] = useState(0);
 
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
 
-  // the clickNumber submitted
-  const [submittedClickNumber, setSubmittedClickNumber] = useState('');
+  // Fetch data from the node application, which accesses the DB for the
+  // number of snapshots for the board.
+  const setNumSnapshotsFromDB = () => {
+    fetch("http://localhost:3001/numsnapshots/")
+      .then((res) => res.json())
+      .then((data) => {
+        setNumSnapshots(data.numSnapshots);
+      })
+      .catch((error) => console.log(error));
+  }
+
+  setInterval(() => setNumSnapshotsFromDB(), 1000);
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
@@ -22,6 +35,28 @@ const Scramboard = (props) => {
   // of the Scramboard class
   const handleColorChangeComplete = (color) => {
     setColor(color.hex);
+  }
+
+  const getSnapshotButtons = () => {
+    const listElements = Array(numSnapshots).fill(null);
+    listElements[0] = <button key={0} 
+                        className="snapshot_element"
+                        onClick={() => {
+                          setClickNumber('');
+                        }}>
+                          Live Board
+                      </button>
+    for (let i = 2; i <= numSnapshots; ++i) {
+      listElements[i] = 
+        <button key={i} 
+                className="snapshot_element"
+                onClick={() => {
+                  setClickNumber(numSnapshots - i);
+                }}>
+                  Snapshot {numSnapshots - i}
+        </button>
+    }
+    return listElements;
   }
 
   return (
@@ -35,22 +70,15 @@ const Scramboard = (props) => {
 
           <ColorPicker className="color_picker" onColorChangeComplete={handleColorChangeComplete} />
 
-          <div className="snapshot_selector" >
-            <label>
-              Enter a click number to travel back to:
-              <input type="text" onChange={(event) => setClickNumber(event.target.value)}/>
-            </label>
-            <button type="submit" value="Submit" onClick={() => {
-              setSubmittedClickNumber(clickNumber)
-              console.log(submittedClickNumber); 
-            }
-            }/>
-          </div>
+
+          <scrollable-component class="snapshot_list">
+            {getSnapshotButtons()}
+          </scrollable-component>
 
           <div className="scram-board">
             <Board currentColor={color} 
                     userLoggedIn={username != null}
-                    clickNumber={submittedClickNumber}
+                    clickNumber={clickNumber}
             />
           </div>
 

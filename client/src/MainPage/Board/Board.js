@@ -108,7 +108,7 @@ class Board extends React.Component {
     }
 
     let loggedOutAlertMessage = 'Please Log-in to Edit the Board'
-    let snapshotAlertMessage = 'You are viewing a snapshot. Go back to main board to edit.'
+    let snapshotAlertMessage = 'You are viewing a snapshot. Go back to live board to edit.'
 
     return (
       <div className="board">

@@ -54,6 +54,17 @@ app.get('/board', (req, res) => {
   });
 });
 
+// Get the number of snapshots from firebase
+app.get('/numsnapshots', (req, res) => {
+  historyRef.get().then((snapshot) => {
+    const historyVal = snapshot.val();
+    assert(historyVal != null);
+    const numClicks = historyVal.currentSize;
+    assert(numClicks != null);
+    res.json({numSnapshots: numClicks});
+  });
+});
+
 // Read from db and return a specific snapshot of the board
 // req must be of form:
 // req = {
@@ -185,6 +196,7 @@ function initChat(io) {
 
 const server = http.createServer(app);
 const { Server } = require('socket.io');
+const { assert } = require("console");
 const io = new Server(server,{
   cors: {
     origin: '*',
