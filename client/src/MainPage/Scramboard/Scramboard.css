@@ -28,7 +28,7 @@
   direction: 'row-reverse';
   width: 100%;
   background-color: rgb(228, 92, 13);
-  height: 40vh;
+  height: 35vh;
 }
 
 .Avatar {
@@ -44,7 +44,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   background-color: #c0c0c0;
-  height: 50vh;
+  height: 42.5vh;
 }
 
 .chat_input {
