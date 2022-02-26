@@ -16,19 +16,23 @@ const MessageInput = (props) => {
     setValue('');
   };
 
-  return (
-    <form onSubmit={submitForm}>
-      <input
-        autoFocus
-        value={value}
-        placeholder="Type your message"
-        onChange={(e) => {
-          setValue(e.currentTarget.value);
-        }}
-        className='chat_input'
-      />
-    </form>
-  );
+  if (props.username !== null) {
+    return (
+      <form onSubmit={submitForm}>
+        <input
+          autoFocus
+          value={value}
+          placeholder="Type your message"
+          onChange={(e) => {
+            setValue(e.currentTarget.value);
+          }}
+          className='chat_input'
+        />
+      </form>
+    );
+  } else {
+      return(<div></div>)
+  }
 };
 
 export default MessageInput;
