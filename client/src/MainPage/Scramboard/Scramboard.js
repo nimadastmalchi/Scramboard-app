@@ -42,14 +42,16 @@ const Scramboard = (props) => {
             </label>
             <button type="submit" value="Submit" onClick={() => {
               setSubmittedClickNumber(clickNumber)
-              console.log(submittedClickNumber); }
+              console.log(submittedClickNumber); 
+            }
             }/>
           </div>
 
           <div className="scram-board">
             <Board currentColor={color} 
-                   userLoggedIn={username != null}
-                   clickNumber={submittedClickNumber}/>
+                    userLoggedIn={username != null}
+                    clickNumber={submittedClickNumber}
+            />
           </div>
 
         </div>

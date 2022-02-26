@@ -1,7 +1,8 @@
 // Board.js
 import Pixel from '../Pixel/Pixel';
 import React from 'react';
-import AlertMessage from '../Alert/AlertMessage'
+import AlertMessage from '../Alert/AlertMessage';
+import './Board.css';
 
 class Board extends React.Component {
   constructor(props) {
@@ -15,15 +16,18 @@ class Board extends React.Component {
       showSnapshotAlert: false,
     };
 
+    this.renderedClickNum = ''; // the click number that is rendered
+
     console.log('constructed');
     this.setBoardFromDB();
     setInterval(() => this.setBoardFromDB(), 5000);
   }
 
   setBoardFromDB() {
-    console.log(this.props.clickNumber);
+    //console.log("Current click number: " + this.props.clickNumber);
     // get data from node
-    if (this.props.clickNumber == '') {
+    const clickNumber = this.props.clickNumber;
+    if (clickNumber === '') {
       fetch("http://localhost:3001/board/")
         .then((res) => res.json())
         .then((data) => {
@@ -40,7 +44,7 @@ class Board extends React.Component {
         mode: 'cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clickNumber: this.props.clickNumber
+          clickNumber: clickNumber
         })
       }).then((data) => data.json())
         .then((json) => {
@@ -52,10 +56,11 @@ class Board extends React.Component {
         })
         .catch((error) => console.log("Error: " + error));
     }
+    this.renderedClickNum = clickNumber;
   }
 
   handleClick(i, j) {
-    if (this.props.clickNumber != '') {
+    if (this.props.clickNumber !== '') {
       this.setState({showSnapshotAlert:true});
       return; // ignore cick
     }
@@ -90,6 +95,9 @@ class Board extends React.Component {
   }
 
   render() {
+    if (this.renderedClickNum !== this.props.clickNumber) {
+      this.setBoardFromDB();
+    }
     const rows = Array(this.state.numRows).fill(null);
     for (let i = 0; i < this.state.numRows; ++i) {
       const pixelElements = Array(this.state.numCols).fill(null);
@@ -100,17 +108,17 @@ class Board extends React.Component {
     }
 
     let loggedOutAlertMessage = 'Please Log-in to Edit the Board'
-    let snapshotAlertMessage = 'You are viewing a snapshot; go back to present board'
+    let snapshotAlertMessage = 'You are viewing a snapshot. Go back to main board to edit.'
 
     return (
-      <div>
+      <div className="board">
         {this.state.showSnapshotAlert ? 
           <AlertMessage condition={"Failure"}
                         message={snapshotAlertMessage}
                         showAlert={true} 
                         hideAlert={() => this.setState({showSnapshotAlert:false})}
           /> :
-           (this.state.showLoggedOutAlert ? 
+            (this.state.showLoggedOutAlert ? 
               <AlertMessage condition={"Failure"} 
                             message={loggedOutAlertMessage}
                             showAlert={true} 

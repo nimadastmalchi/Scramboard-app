@@ -1,5 +1,6 @@
 .scram-board {
-  margin-left: 20px;
+  position: relative;
+  left: -40px;
   margin-top: 20px;
 }
 
