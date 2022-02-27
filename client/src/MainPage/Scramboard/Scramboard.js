@@ -5,14 +5,15 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import UserAvatar from 'react-user-avatar';
-import Footer from '../Footer/footer'
+import Footer from '../Footer/footer';
+import stringRGBHash from '../../Utilities/hash';
 import 'scrollable-component';
 
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
   const [username, setUsername] = useState(null); // null means no user logged in
   const [numSnapshots, setNumSnapshots] = useState(0);
-  const [avatarColor, setAvatarColor] = useState("rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")")
+  const [avatarColor, setAvatarColor] = useState("rgb(0, 0, 0)");
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
 
@@ -51,10 +52,12 @@ const Scramboard = (props) => {
   //setInterval(() => setNumSnapshotsFromDB(), 1000);
 
   useEffect(() => {
-    console.log("value changed" + userNumberofpixelEdited);
     setNumSnapshotsFromDB();
     setProfileFromDB();
-  }, [userNumberofpixelEdited, userNumberofComments, numSnapshots]);
+    if (username != null) {
+      setAvatarColor(stringRGBHash(username));
+    }
+  }, [userNumberofpixelEdited, userNumberofComments, numSnapshots, username]);
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
@@ -130,7 +133,7 @@ const Scramboard = (props) => {
               <div className='profile-info'>
                 <h6>Birthdate: {userBirthdate} </h6>
                 <h6>Number of Comments: {userNumberofComments} </h6>
-                <h6>Number of PixelsChanged: {userNumberofpixelEdited} </h6>
+                <h6>Number of Pixels Changed: {userNumberofpixelEdited} </h6>
               </div>
             </div>
             :

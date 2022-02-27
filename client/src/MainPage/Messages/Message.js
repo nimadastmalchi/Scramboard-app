@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import stringRGBHash from '../../Utilities/hash';
 import './Messages.css';
 
 function Message(props) {
@@ -13,7 +14,7 @@ function Message(props) {
      *      props.message
      */
 
-    // Randomly generate a color for the username (like twitch chat)
+    // Randomly generate a color for annonymous users
 
     /**
      * Randomly assign a color to the username associated with the chat message.
@@ -26,9 +27,20 @@ function Message(props) {
     const G = Math.random() * (MAX_RGB - MIN_RGB) + MIN_RGB;
     const B = Math.random() * (MAX_RGB - MIN_RGB) + MIN_RGB;
 
+    let rgbString = null;
+    if (props.username === "Anonymous") {
+        // set to random values:
+        rgbString = `rgb(${R}, ${G}, ${B})`;
+    }
+    else {
+        rgbString = stringRGBHash(props.username);
+    }
+
     return (
         <li className='chat_message'>
-            <b style={{color: `rgb(${R}, ${G}, ${B})`}}>{props.username}:</b> {props.message}
+            <b style={{color: rgbString}}>
+                {props.username}:
+            </b> {props.message}
         </li>
     );
 }
