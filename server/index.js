@@ -208,14 +208,12 @@ app.post('/userlogin', (req, res) => {
 
 // ********** UserProfileUpdate ************
 app.post('/userprofileupdate', (req, res) => {
-  console.log("readched");
-
   db.ref('users/' + req.body.id).update({
     numberofpixelEdited: req.body.userNumberofpixelEdited,
     numberofComments: req.body.userNumberofComments,
   });
 
-  res.json("update profile");
+  res.send({ message: "update profile" });
 })
 
 function initChat(io) {

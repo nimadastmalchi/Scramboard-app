@@ -15,8 +15,8 @@ const Scramboard = (props) => {
   const [avatarColor, setAvatarColor] = useState("rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")")
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
-  //User profile information 
 
+  //User profile information 
   const [userBirthdate, setUserBirthdate] = useState("NAN");
   const [userNumberofpixelEdited, setUserNumberofpixelEdited] = useState(0);
   const [userNumberofComments, setUserNumberofComments] = useState(0);
@@ -33,11 +33,7 @@ const Scramboard = (props) => {
       .catch((error) => console.log(error));
   }
 
-  setInterval(() => setNumSnapshotsFromDB(), 1000);
-
-  useEffect(() => {
-    console.log("value changed" + userNumberofpixelEdited);
-
+  const setProfileFromDB = () => {
     fetch('http://localhost:3001/userprofileupdate', {
       method: 'POST',
       mode: 'cors',
@@ -48,10 +44,18 @@ const Scramboard = (props) => {
         id: userID
       })
     })
-      .then(
-        response => (response.json())
-      )
-  }, [userNumberofpixelEdited, userNumberofComments]);
+      .then((res) => res.json())
+      .catch((error) => console.log(error));
+  }
+
+  //setInterval(() => setNumSnapshotsFromDB(), 1000);
+
+  useEffect(() => {
+    console.log("value changed" + userNumberofpixelEdited);
+    setNumSnapshotsFromDB();
+    setProfileFromDB();
+  }, [userNumberofpixelEdited, userNumberofComments, numSnapshots]);
+
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
   // to the Board component, then the Pixel componenet. Every time
