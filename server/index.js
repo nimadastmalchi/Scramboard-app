@@ -10,10 +10,7 @@ const chat = require('./ChatConnection.js');
 
 //firebase
 var admin = require("firebase-admin");
-//user Profile Information
-var birthdate = "";
-var numberofpixelEdited = 0;
-var numberofComments = 0;
+
 
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
@@ -65,7 +62,7 @@ app.get('/numsnapshots', (req, res) => {
     assert(historyVal != null);
     const numClicks = historyVal.currentSize;
     assert(numClicks != null);
-    res.json({ numSnapshots: numClicks, userBirthdate: birthdate, userNumberofpixelEdited: numberofpixelEdited, userNumberofComments: numberofComments });
+    res.json({ numSnapshots: numClicks });
   });
 });
 
@@ -150,6 +147,8 @@ app.post('/board', (req, res) => {
 // }
 app.post('/newuser', (req, res) => {
   let reponse = "received";
+  let birthdate = "";
+  let id="";
   admin.auth().createUser({
     email: req.body.email,
     password: req.body.password,
@@ -163,12 +162,14 @@ app.post('/newuser', (req, res) => {
         numberofpixelEdited: 0,
         numberofComments: 0,
       });
+      birthdate = new Date(userRecord.metadata.creationTime).toDateString();
+      id=userRecord.uid;
     })
     .catch((error) => {
       console.log('Error creating new user:', error);
       reponse = error.message;
     }).then(() => {
-      res.send({ message: reponse });
+      res.send({ message: reponse, numPixelEdited: 0, numComments: 0, birthdate: birthdate, id: id });
     })
 });
 
@@ -180,12 +181,17 @@ app.post('/newuser', (req, res) => {
 // }
 app.post('/userlogin', (req, res) => {
 
-  const userRef = db.ref('users/' + req.body.id);
+  //user Profile Information
+  var birthdate = "";
+  var numPixelEdited = 0;
+  var numComments = 0;
 
+  const userRef = db.ref('users/' + req.body.id);
+  //reading user's information Firebase
   userRef.get().then((snapshot) => {
     const userInfo = snapshot.val();
-    numberofpixelEdited = userInfo.numberofpixelEdited;
-    numberofComments = userInfo.numberofComments;
+    numPixelEdited = userInfo.numberofpixelEdited;
+    numComments = userInfo.numberofComments;
     console.log(userInfo);
     console.log(userInfo.numberofComments);
   }).then(() => {
@@ -194,14 +200,21 @@ app.post('/userlogin', (req, res) => {
         console.log("Creation time:", userRecord.metadata.creationTime);
         birthdate = new Date(userRecord.metadata.creationTime).toDateString();
 
-        res.send({ numberofpixelEdited: numberofpixelEdited, numberofComments: numberofComments, birthdate: birthdate });
+        res.send({ numPixelEdited: numPixelEdited, numComments: numComments, birthdate: birthdate, id: req.body.id });
       })
   })
-
-
   //  res.json("recieved");
 });
 
+// ********** UserProfileUpdate ************
+app.post('/userprofileupdate', (req, res) => {
+  db.ref('users/' + req.body.id).update({
+    numberofpixelEdited: req.body.userNumberofpixelEdited,
+    numberofComments: req.body.userNumberofComments,
+  });
+
+  res.send({ message: "update profile" });
+})
 
 function initChat(io) {
   io.on('connection', (socket) => {

@@ -69,9 +69,13 @@ class Board extends React.Component {
       return; // ignore click
     }
 
+
     this.state.pixels[i][j] = this.props.currentColor; // currentColor is passed down from Scramboard
     this.setState({});
 
+    //adding pixel to user's count
+    this.props.userChangedPixel(this.props.userClickNum+1);
+    //console.log(this.props.userClickNum);
     // send data to node
     fetch('http://localhost:3001/board', {
       method: 'POST',
