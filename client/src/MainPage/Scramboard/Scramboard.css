@@ -38,36 +38,6 @@
   font-size: 64px;
 } 
 
-.chat_window {
-  margin: 0;
-  padding-bottom: 3rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  width: 100%;
-  background-color: #c0c0c0;
-  height: 45vh;
-}
-
-.chat_input {
-  /* CSS for the chat input bar */
-  bottom: 0px;
-  border: none;
-  padding: 0 1rem;
-  flex-grow: 1;
-  border-radius: 2rem;
-  margin: 0.25rem;
-}
-
-.chat_messages {
-  /* CSS for chat message history */
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  height: 40vh;
-  /* Gives the chat message history section a fix height; enables scrolling */
-  overflow: auto;
-  /* Automatically enables scrollbar when needed */
-}
-
 .snapshot_list {
   left: 10px;
   height: 240px;
@@ -88,41 +58,4 @@
   position: relative;
   top: 315px;
   left: 0px;
-}
-
-/*
-Eric Florin: 2/18/22 4:44 PM
-
-webkit is an open source web browser engine that is mainly used
-by Safari and other official Apple apps.
-
-However, webkit is supported by the major browsers, expect Internet Explorer)
-See this article: https://css-tricks.com/almanac/properties/s/scrollbar/
-
-Below, I was using webkit to customize the scrollbar that would appear in the message
-history of the chat box.
-
-Could be useful for other CSS applications.
-*/
-
-
-/* CSS for chatbox message history scrollbar */
-.chat_messages::-webkit-scrollbar {
-  /* Overall scrollbar CSS */
-  width: 5px;
-}
-
-.chat_messages::-webkit-scrollbar-thumb {
-  /* CSS for scrollbar handle*/
-  background: #50C0C0
-}
-
-.chat_messages::-webkit-scrollbar-thumb:hover {
-  /* CSS for scrollbar handle when hovering over with mouse */
-  background: #fff
-}
-
-.chat_messages::-webkit-scrollbar-track {
-  /* CSS for scrollbar "track" that handle rides on */
-  background: #c0c0c0
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import Messages from '../Messages/Messages';
 import MessageInput from '../Messages/MessageInput';
+import '../Messages/Messages.css'
 
 const SERVER_PORT = 3001;
 
