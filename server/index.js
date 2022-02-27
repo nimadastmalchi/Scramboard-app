@@ -10,6 +10,10 @@ const chat = require('./ChatConnection.js');
 
 //firebase
 var admin = require("firebase-admin");
+//user Profile Information
+var birthdate = "";
+var numberofpixelEdited = 0;
+var numberofComments = 0;
 
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
@@ -61,7 +65,7 @@ app.get('/numsnapshots', (req, res) => {
     assert(historyVal != null);
     const numClicks = historyVal.currentSize;
     assert(numClicks != null);
-    res.json({numSnapshots: numClicks});
+    res.json({ numSnapshots: numClicks, userBirthdate: birthdate, userNumberofpixelEdited: numberofpixelEdited, userNumberofComments: numberofComments });
   });
 });
 
@@ -155,7 +159,9 @@ app.post('/newuser', (req, res) => {
       db.ref('users/' + userRecord.uid).set({
         email: req.body.email,
         password: req.body.password,
-        username: req.body.username
+        username: req.body.username,
+        numberofpixelEdited: 0,
+        numberofComments: 0,
       });
     })
     .catch((error) => {
@@ -174,30 +180,39 @@ app.post('/newuser', (req, res) => {
 // }
 app.post('/userlogin', (req, res) => {
 
-  console.log(req.body.email);
-  console.log(req.body.password);
-  /*
- admin.auth().getUserByEmail("samgivian2015@gmail.com") .then((userRecord) => {
-   console.log(userRecord.password)
- }) .catch((error) => {
-   console.log('Error creating new user:', error);
-   reponse = error.message;
- })
- */
-  res.json("recieved");
+  const userRef = db.ref('users/' + req.body.id);
+
+  userRef.get().then((snapshot) => {
+    const userInfo = snapshot.val();
+    numberofpixelEdited = userInfo.numberofpixelEdited;
+    numberofComments = userInfo.numberofComments;
+    console.log(userInfo);
+    console.log(userInfo.numberofComments);
+  }).then(() => {
+    admin.auth().getUser(req.body.id)
+      .then(function (userRecord) {
+        console.log("Creation time:", userRecord.metadata.creationTime);
+        birthdate = new Date(userRecord.metadata.creationTime).toDateString();
+
+        res.send({ numberofpixelEdited: numberofpixelEdited, numberofComments: numberofComments, birthdate: birthdate });
+      })
+  })
+
+
+  //  res.json("recieved");
 });
 
 
 function initChat(io) {
   io.on('connection', (socket) => {
-    new chat.ChatConnection(chatRef, io, socket);   
+    new chat.ChatConnection(chatRef, io, socket);
   });
 };
 
 const server = http.createServer(app);
 const { Server } = require('socket.io');
 const { assert } = require("console");
-const io = new Server(server,{
+const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']

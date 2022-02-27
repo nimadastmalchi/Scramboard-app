@@ -12,10 +12,13 @@ const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
   const [username, setUsername] = useState(null); // null means no user logged in
   const [numSnapshots, setNumSnapshots] = useState(0);
-
+  const [avatarColor, setAvatarColor] = useState("rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")")
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
-
+  //User profile information 
+  const [userBirthdate, setUserBirthdate] = useState("");
+  const [userNumberofpixelEdited, setUserNumberofpixelEdited] = useState(0);
+  const [userNumberofComments, setUserNumberofComments] = useState(0);
   // Fetch data from the node application, which accesses the DB for the
   // number of snapshots for the board.
   const setNumSnapshotsFromDB = () => {
@@ -23,6 +26,9 @@ const Scramboard = (props) => {
       .then((res) => res.json())
       .then((data) => {
         setNumSnapshots(data.numSnapshots);
+        setUserBirthdate(data.userBirthdate);
+        setUserNumberofComments(data.userNumberofComments);
+        setUserNumberofpixelEdited(data.userNumberofpixelEdited);
       })
       .catch((error) => console.log(error));
   }
@@ -91,20 +97,21 @@ const Scramboard = (props) => {
               <span className="Avatar">
                 <UserAvatar
                   size="128"
-                  name={username}
-                  color={"rgb(" + Math.random() * (255) + "," + Math.random() * (255) + "," + Math.random() * (255) + ")"}
+                  name={username.toUpperCase().substring(0, 2)}
+                  color={avatarColor}
                 />
               </span>
-
-              <p>Birthdate: </p>
-              <p>Number of comments: </p>
+              <div className='profile-info'>
+                <h6>Birthdate: {userBirthdate} </h6>
+                <h6>Number of Comments: {userNumberofComments} </h6>
+                <h6>Number of PixelsChanged: {userNumberofpixelEdited} </h6>
+              </div>
             </div>
             :
             <div className="profile">
-              <p>Welcome!</p>
+              <h6>Welcome!</h6>
             </div>
           }
-
           <ChatWindow username={username} />
 
         </div>

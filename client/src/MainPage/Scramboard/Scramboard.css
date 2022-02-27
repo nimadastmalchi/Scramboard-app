@@ -30,7 +30,9 @@
   background-color: rgb(228, 92, 13);
   height: 35vh;
 }
-
+.profile-info{
+  padding: 15px;
+}
 .Avatar {
   display: inline-block;
   /* float:left;  remove */

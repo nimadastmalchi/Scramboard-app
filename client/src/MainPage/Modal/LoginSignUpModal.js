@@ -54,12 +54,17 @@ function LoginSignUpModal(props) {
                         id: userRecord.user.uid
                     })
                 })
-                    .then((res) => res.json())
+                    .then(
+                        response => (response.json())
+                    )
+                    .then((result) => {
+                        console.log(result);
+                    })
                     .catch((error) => { console.log(error) });
             }).catch((error) => {
                 console.log(error);
                 props.triggerAlert(true, "Failure", "Unsuccessful login attempt", "Wrong email or password");
-               // alert(error.message);
+                // alert(error.message);
             })
     }
 
