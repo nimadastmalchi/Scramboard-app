@@ -27,6 +27,10 @@ function LoginSignUpModal(props) {
                 if (result.message === "received") {
                     props.triggerAlert(true, "Success", "Welcome", "You have successfully signed up");
                     props.setusername(username);
+                    props.setuserBirthdate(result.birthdate);
+                    props.setUserNumPixelEdited(result.numPixelEdited);
+                    props.setUsernumPixelEdited(result.numComments);
+                    props.setUserID(result.id)
                 }
                 else {
                     props.triggerAlert(true, "Failure", "Unsuccessful signed up attempt. Please try again later.", result.message)

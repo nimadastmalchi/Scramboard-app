@@ -147,6 +147,8 @@ app.post('/board', (req, res) => {
 // }
 app.post('/newuser', (req, res) => {
   let reponse = "received";
+  let birthdate = "";
+  let id="";
   admin.auth().createUser({
     email: req.body.email,
     password: req.body.password,
@@ -160,12 +162,14 @@ app.post('/newuser', (req, res) => {
         numberofpixelEdited: 0,
         numberofComments: 0,
       });
+      birthdate = new Date(userRecord.metadata.creationTime).toDateString();
+      id=userRecord.uid;
     })
     .catch((error) => {
       console.log('Error creating new user:', error);
       reponse = error.message;
     }).then(() => {
-      res.send({ message: reponse });
+      res.send({ message: reponse, numPixelEdited: 0, numComments: 0, birthdate: birthdate, id: id });
     })
 });
 
@@ -205,12 +209,12 @@ app.post('/userlogin', (req, res) => {
 // ********** UserProfileUpdate ************
 app.post('/userprofileupdate', (req, res) => {
   console.log("readched");
- 
+
   db.ref('users/' + req.body.id).update({
     numberofpixelEdited: req.body.userNumberofpixelEdited,
     numberofComments: req.body.userNumberofComments,
   });
- 
+
   res.json("update profile");
 })
 
