@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import './Scramboard.css';
 import Board from '../Board/Board';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
@@ -16,9 +16,12 @@ const Scramboard = (props) => {
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
   //User profile information 
-  const [userBirthdate, setUserBirthdate] = useState("");
+
+  const [userBirthdate, setUserBirthdate] = useState("NAN");
   const [userNumberofpixelEdited, setUserNumberofpixelEdited] = useState(0);
   const [userNumberofComments, setUserNumberofComments] = useState(0);
+  const [userID, setUserID] = useState(0);
+
   // Fetch data from the node application, which accesses the DB for the
   // number of snapshots for the board.
   const setNumSnapshotsFromDB = () => {
@@ -26,15 +29,29 @@ const Scramboard = (props) => {
       .then((res) => res.json())
       .then((data) => {
         setNumSnapshots(data.numSnapshots);
-        setUserBirthdate(data.userBirthdate);
-        setUserNumberofComments(data.userNumberofComments);
-        setUserNumberofpixelEdited(data.userNumberofpixelEdited);
       })
       .catch((error) => console.log(error));
   }
 
   setInterval(() => setNumSnapshotsFromDB(), 1000);
 
+  useEffect(() => {
+    console.log("value changed" + userNumberofpixelEdited);
+
+    fetch('http://localhost:3001/userprofileupdate', {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userNumberofpixelEdited: userNumberofpixelEdited,
+        userNumberofComments: userNumberofComments,
+        id: userID
+      })
+    })
+      .then(
+        response => (response.json())
+      )
+  }, [userNumberofpixelEdited, userNumberofComments]);
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
   // to the Board component, then the Pixel componenet. Every time
@@ -70,13 +87,16 @@ const Scramboard = (props) => {
     <div>
       <CustomNavbar
         setusername={setUsername}
+        setuserBirthdateScramboard={setUserBirthdate}
+        setUserNumPixelEditedScramboard={setUserNumberofpixelEdited}
+        setUsernumPixelEditedScramboard={setUserNumberofComments}
+        setUserIDScramboard={setUserID}
         getusername={() => username}
       />
       <div className="scram">
         <div className="scram-div">
 
           <ColorPicker className="color_picker" onColorChangeComplete={handleColorChangeComplete} />
-
 
           <scrollable-component class="snapshot_list">
             {getSnapshotButtons()}
@@ -86,6 +106,8 @@ const Scramboard = (props) => {
             <Board currentColor={color}
               userLoggedIn={username != null}
               clickNumber={clickNumber}
+              userChangedPixel={setUserNumberofpixelEdited}
+              userClickNum={userNumberofpixelEdited}
             />
           </div>
 
@@ -112,7 +134,7 @@ const Scramboard = (props) => {
               <h6>Welcome!</h6>
             </div>
           }
-          <ChatWindow username={username} />
+          <ChatWindow username={username} userNumberofComments={userNumberofComments}   setUserNumberofCommentsScramboard={setUserNumberofComments} />
 
         </div>
       </div>

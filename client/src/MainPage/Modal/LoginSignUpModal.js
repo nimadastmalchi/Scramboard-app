@@ -58,6 +58,10 @@ function LoginSignUpModal(props) {
                         response => (response.json())
                     )
                     .then((result) => {
+                        props.setuserBirthdate(result.birthdate);
+                        props.setUserNumPixelEdited(result.numPixelEdited);
+                        props.setUsernumPixelEdited(result.numComments);
+                        props.setUserID(result.id)
                         console.log(result);
                     })
                     .catch((error) => { console.log(error) });

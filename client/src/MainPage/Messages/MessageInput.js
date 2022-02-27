@@ -23,6 +23,7 @@ const MessageInput = (props) => {
       username: username,
       message: value
     }
+    props.setUserNumberofCommentsChatWindow(props.userNumberofComments+1);
 
     // Print to console the message payload and then use Socket.io to send it off.
     console.log("emit message: " + message);

@@ -14,8 +14,8 @@ const CustomNavbar = (props) => {
   const [showAlertType, setShowAlertType] = useState("");
   const [showAlertMessage, setShowAlertMessage] = useState("");
   const [showAlertMessageHeader, setShowAlertMessageHeader] = useState("");
-  
-  function alertHide(){
+
+  function alertHide() {
     setShowAlert(false);
   }
 
@@ -53,11 +53,30 @@ const CustomNavbar = (props) => {
             setShowAlert(condition);
             setShowAlertMessageHeader(messageHeader);
           }}
-          
+
           setusername={(username) => {
             props.setusername(username);
             setLoginSignUpShow(false); // ensure login is not shown next time
           }}
+          setuserBirthdate={(birthdate) => {
+            props.setuserBirthdateScramboard(birthdate);
+          }}
+          setUserNumPixelEdited={(numPixelEdited) => {
+            props.setUserNumPixelEditedScramboard(numPixelEdited);
+          }}
+          setUsernumPixelEdited={(numComments) => {
+            props.setUsernumPixelEditedScramboard(numComments);
+          }}
+          setUsernumPixelEdited={(numComments) => {
+            props.setUsernumPixelEditedScramboard(numComments);
+          }}
+          setUserID={(id)=>{
+              props.setUserIDScramboard(id);
+          }}
+
+          // props.setUsernumPixelEdited(result.numComments);
+
+
 
           show={loginSignUpShow}
           onHide={() => setLoginSignUpShow(false)}
@@ -76,7 +95,7 @@ const CustomNavbar = (props) => {
           <UserInfo />
         </Container>
       </Navbar>
-      {showAlert ? <AlertMessage condition={showAlertType}  messageHeader={showAlertMessageHeader} message={showAlertMessage} showAlert={showAlert} hideAlert={alertHide} /> : null}
+      {showAlert ? <AlertMessage condition={showAlertType} messageHeader={showAlertMessageHeader} message={showAlertMessage} showAlert={showAlert} hideAlert={alertHide} /> : null}
     </div>
   );
 }
