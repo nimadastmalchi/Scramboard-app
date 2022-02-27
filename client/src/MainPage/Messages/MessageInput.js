@@ -54,8 +54,7 @@ const MessageInput = (props) => {
   } else {
       return(<div style={{textAlign: "center",
                           margin: "auto",
-                          border: "3px solid red",
-                          padding: "2px",
+                          padding: "15px",
               }}> 
                   <strong>Please log-in to chat</strong>
              </div>

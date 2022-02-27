@@ -96,7 +96,7 @@ const Scramboard = (props) => {
             <div className="profile">
               <span className="Avatar">
                 <UserAvatar
-                  size="128"
+                  size="100"
                   name={username.toUpperCase().substring(0, 2)}
                   color={avatarColor}
                 />

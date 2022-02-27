@@ -39,6 +39,7 @@ const CustomNavbar = (props) => {
         </Navbar.Brand>
       );
     }
+
     return (
       <Navbar.Brand>
         <Button variant="primary" onClick={() => setLoginSignUpShow(true)}>

@@ -1,8 +1,6 @@
 import React from 'react'
 import './Messages.css';
 
-
-
 function Message(props) {
 
     /**

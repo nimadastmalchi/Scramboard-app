@@ -16,8 +16,8 @@
 }
 
 .right_sidebar {
-  width: 20%;
-  height: 10vh;
+  width: 30%;
+  height: 5vh;
 }
 
 /********* Profile **********/
@@ -30,14 +30,16 @@
   background-color: rgb(228, 92, 13);
   height: 35vh;
 }
+
 .profile-info{
   padding: 15px;
 }
+
 .Avatar {
   display: inline-block;
   /* float:left;  remove */
-  margin: 5px 5px 0 0;
-  font-size: 64px;
+  margin: 0px 0px 0 0;
+  font-size: 50px;
 } 
 
 .snapshot_list {
