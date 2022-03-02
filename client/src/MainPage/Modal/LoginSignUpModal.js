@@ -105,19 +105,7 @@ function LoginSignUpModal(props) {
                                     <label>Password</label>
                                     <input type="password" className="form-control" placeholder="Enter password" value={password} onChange={(event) => setPassword(event.target.value)} />
                                 </div>
-
-
-                                <div className="form-group">
-                                    <div className="custom-control custom-checkbox">
-                                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                                    </div>
-                                </div>
-
                                 <Button style={{ marginTop: '20px' }} type="submit" className="btn btn-dark btn-lg btn-block" onClick={onLogin}>Log in</Button>
-                                <p className="forgot-password text-right">
-                                    <a href="/">Forgot password?</a>
-                                </p>
                             </form>
                         </Tab>
 

@@ -94,6 +94,7 @@ class Board extends React.Component {
       <Pixel
         onClick={() => this.handleClick(i, j)}
         color={this.state.pixels[i][j]}
+        key={i*50+j}
       />
     );
   }
