@@ -77,12 +77,12 @@ const Scramboard = (props) => {
       }}>
       Live Board
     </button>
-    for (let i = 2; i <= numSnapshots; ++i) {
+    for (let i = 1; i <= numSnapshots - 1; ++i) {
       listElements[i] =
         <button key={i}
           className="snapshot_element"
           onClick={() => {
-            setClickNumber(numSnapshots - i);
+            setClickNumber(numSnapshots - i - 1);
           }}>
           Snapshot {numSnapshots - i}
         </button>
