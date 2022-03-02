@@ -14,11 +14,13 @@ const Scramboard = (props) => {
   const [username, setUsername] = useState(null); // null means no user logged in
   const [numSnapshots, setNumSnapshots] = useState(0);
   const [avatarColor, setAvatarColor] = useState("rgb(0, 0, 0)");
+
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
+  const [clickedButtonIndex, setClickedButtomIndex] = useState(0); // initailly, the Live Board is clicked
 
   //User profile information 
-  const [userBirthdate, setUserBirthdate] = useState("NAN");
+  const [userBirthdate, setUserBirthdate] = useState("NAN"); 
   const [userNumberofpixelEdited, setUserNumberofpixelEdited] = useState(0);
   const [userNumberofComments, setUserNumberofComments] = useState(0);
   const [userID, setUserID] = useState(0);
@@ -73,8 +75,10 @@ const Scramboard = (props) => {
     listElements[0] = <button key={0}
       className="snapshot_element"
       onClick={() => {
+        setClickedButtomIndex(0);
         setClickNumber('');
-      }}>
+      }}
+      style={{backgroundColor: (0 == clickedButtonIndex ? '#a9a9a9' : 'white')}}>
       Live Board
     </button>
     for (let i = 1; i <= numSnapshots - 1; ++i) {
@@ -82,8 +86,10 @@ const Scramboard = (props) => {
         <button key={i}
           className="snapshot_element"
           onClick={() => {
+            setClickedButtomIndex(i);
             setClickNumber(numSnapshots - i - 1);
-          }}>
+          }}
+          style={{backgroundColor: (i == clickedButtonIndex ? '#a9a9a9' : 'white')}}>
           Snapshot {numSnapshots - i}
         </button>
     }
