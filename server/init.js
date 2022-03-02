@@ -33,9 +33,11 @@ function validateHistory(historyRef) {
     }
     // at this point, historyRef is not valid.
     console.log("invalid hisotry snapshot");
+    var myDate = new Date();
+    var pstDate = myDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"});
     historyRef.set({
       currentSize: 1,
-      clicks: [["0,0", "#ffffff"]]
+      clicks: [["0,0", "#ffffff", pstDate]]
     });
   });
 }

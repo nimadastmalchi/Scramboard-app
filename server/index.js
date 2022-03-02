@@ -131,8 +131,10 @@ app.post('/board', (req, res) => {
       console.log('Invalid history snapshot after initialization');
       process.exit(1);
     }
+    var myDate = new Date();
+    var pstDate = myDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"});
     db.ref('history/clicks/' + currentSize).set(
-      [req.body.row + ',' + req.body.col, req.body.new_color]
+      [req.body.row + ',' + req.body.col, req.body.new_color, pstDate]
     );
     db.ref('history/currentSize').set(currentSize + 1);
   });
