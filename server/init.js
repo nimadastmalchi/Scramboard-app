@@ -37,7 +37,11 @@ function validateHistory(historyRef) {
     var pstDate = myDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"});
     historyRef.set({
       currentSize: 1,
-      clicks: [["0,0", "#ffffff", pstDate]]
+      clicks: [{
+        index: "0,0", 
+        color: "#ffffff", 
+        date: pstDate
+      }]
     });
   });
 }

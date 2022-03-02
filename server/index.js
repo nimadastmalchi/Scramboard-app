@@ -100,11 +100,11 @@ app.post('/snapshot', (req, res) => {
         // construct the board snapshot:
         const newBoard = Array.from(Array(NUM_ROWS), () => Array(NUM_COLS).fill('#ffffff'));
         for (let i = 0; i <= clickNumber; ++i) {
-          const point = clicks[i][0];
-          const xy = point.split(',');
+          const index = clicks[i].index;
+          const xy = index.split(',');
           x = parseInt(xy[0]);
           y = parseInt(xy[1]);
-          const color = clicks[i][1];
+          const color = clicks[i].color;
           newBoard[x][y] = color;
         }
         res.json({
@@ -133,9 +133,11 @@ app.post('/board', (req, res) => {
     }
     var myDate = new Date();
     var pstDate = myDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"});
-    db.ref('history/clicks/' + currentSize).set(
-      [req.body.row + ',' + req.body.col, req.body.new_color, pstDate]
-    );
+    db.ref('history/clicks/' + currentSize).set({
+      index: req.body.row + ',' + req.body.col, 
+      color: req.body.new_color, 
+      date: pstDate
+    });
     db.ref('history/currentSize').set(currentSize + 1);
   });
 });
@@ -194,12 +196,9 @@ app.post('/userlogin', (req, res) => {
     const userInfo = snapshot.val();
     numPixelEdited = userInfo.numberofpixelEdited;
     numComments = userInfo.numberofComments;
-    console.log(userInfo);
-    console.log(userInfo.numberofComments);
   }).then(() => {
     admin.auth().getUser(req.body.id)
       .then(function (userRecord) {
-        console.log("Creation time:", userRecord.metadata.creationTime);
         birthdate = new Date(userRecord.metadata.creationTime).toDateString();
 
         res.send({ numPixelEdited: numPixelEdited, numComments: numComments, birthdate: birthdate, id: req.body.id });

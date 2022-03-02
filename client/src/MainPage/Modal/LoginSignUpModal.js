@@ -34,8 +34,6 @@ function LoginSignUpModal(props) {
                 }
                 else {
                     props.triggerAlert(true, "Failure", "Unsuccessful signed up attempt. Please try again later.", result.message)
-                    //alert(result.message)
-                    console.log(result.message);
                 }
             })
             .catch((error) => console.log(error));
@@ -44,7 +42,6 @@ function LoginSignUpModal(props) {
     function onLogin() {
         signInWithEmailAndPassword(auth, email, password)
             .then((userRecord) => {
-                console.log(userRecord.user.uid);
                 props.setusername(auth.currentUser.displayName);
                 props.triggerAlert(true, "Success", "Begin your editing journay", "You have successfully logged in")
 
@@ -66,7 +63,6 @@ function LoginSignUpModal(props) {
                         props.setUserNumPixelEdited(result.numPixelEdited);
                         props.setUsernumPixelEdited(result.numComments);
                         props.setUserID(result.id)
-                        console.log(result);
                     })
                     .catch((error) => { console.log(error) });
             }).catch((error) => {

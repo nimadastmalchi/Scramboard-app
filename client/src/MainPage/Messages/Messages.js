@@ -7,8 +7,6 @@ function Messages({ socket }) {
 
   useEffect(() => {
     const messageListener = (message) => {
-      console.log("received msg: " + message);
-
       setMessages((prevMessages) => {
         const newMessages = { ...prevMessages };
         newMessages[message.id] = message;

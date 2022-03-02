@@ -18,7 +18,6 @@ class Board extends React.Component {
 
     this.renderedClickNum = ''; // the click number that is rendered
 
-    console.log('constructed');
     this.setBoardFromDB();
     setInterval(() => this.setBoardFromDB(), 5000);
   }
