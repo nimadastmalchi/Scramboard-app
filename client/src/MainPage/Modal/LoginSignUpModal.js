@@ -1,4 +1,4 @@
-import { Modal, Button, Tabs, Tab, Alert } from 'react-bootstrap';
+import { Modal, Button, Tabs, Tab } from 'react-bootstrap';
 import { React, useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseCongfig";

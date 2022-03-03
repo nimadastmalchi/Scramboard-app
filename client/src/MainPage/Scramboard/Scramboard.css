@@ -27,8 +27,11 @@
   text-align: center;
   direction: 'row-reverse';
   width: 100%;
-  background-color: rgb(228, 92, 13);
+  background-color: #8b0000;
   height: 35vh;
+  margin-bottom: 10px;
+  border: 5px solid rgba(59,58,58,0.4);
+  box-shadow: -10px 10px 10px gray;
 }
 
 .profile-info{
@@ -38,22 +41,31 @@
 .Avatar {
   display: inline-block;
   /* float:left;  remove */
-  margin: 0px 0px 0 0;
+  margin: -30px 0px 0 0;
   font-size: 50px;
 } 
 
-.snapshot_list {
-  left: 10px;
-  height: 240px;
-  top: 315px;
+.snapshot-list {
+  font-weight: bold;
+  position: relative;
   width: 240px;
-  background-color: #c0c0c0
+  height: 240px;
+  background-color: #c0c0c0;
+  border: 1px solid rgba(59,58,58,0.4);
+  left: 10px;
+  top: 320px;
+  transition: top ease 0.5s;
+  box-shadow: 10px 5px 10px gray;
 }
 
-.snapshot_element {
+.snapshot-element {
   margin: 0 auto;
   display: block;
   margin-top: 10px;
+}
+
+.snapshot-element:hover {
+  font-size: 20px;
 }
 
 .snapshot_selector {

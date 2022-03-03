@@ -73,23 +73,23 @@ const Scramboard = (props) => {
   const getSnapshotButtons = () => {
     const listElements = Array(numSnapshots).fill(null);
     listElements[0] = <button key={0}
-      className="snapshot_element"
+      className="snapshot-element"
       onClick={() => {
         setClickedButtomIndex(0);
         setClickNumber('');
       }}
-      style={{backgroundColor: (0 == clickedButtonIndex ? '#a9a9a9' : 'white')}}>
+      style={{backgroundColor: (0 === clickedButtonIndex ? '#a9a9a9' : 'white')}}>
       Live Board
     </button>
     for (let i = 1; i <= numSnapshots - 1; ++i) {
       listElements[i] =
         <button key={i}
-          className="snapshot_element"
+          className="snapshot-element"
           onClick={() => {
             setClickedButtomIndex(i);
             setClickNumber(numSnapshots - i - 1);
           }}
-          style={{backgroundColor: (i == clickedButtonIndex ? '#a9a9a9' : 'white')}}>
+          style={{backgroundColor: (i === clickedButtonIndex ? '#a9a9a9' : 'white')}}>
           Snapshot {numSnapshots - i}
         </button>
     }
@@ -111,7 +111,7 @@ const Scramboard = (props) => {
 
           <ColorPicker className="color_picker" onColorChangeComplete={handleColorChangeComplete} />
 
-          <scrollable-component class="snapshot_list">
+          <scrollable-component class="snapshot-list">
             {getSnapshotButtons()}
           </scrollable-component>
 

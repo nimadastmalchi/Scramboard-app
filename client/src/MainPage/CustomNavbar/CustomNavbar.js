@@ -96,7 +96,13 @@ const CustomNavbar = (props) => {
           <UserInfo />
         </Container>
       </Navbar>
-      {showAlert ? <AlertMessage condition={showAlertType} messageHeader={showAlertMessageHeader} message={showAlertMessage} showAlert={showAlert} hideAlert={alertHide} /> : null}
+      {showAlert ? <AlertMessage 
+                      className="alert-message"
+                      condition={showAlertType}
+                      messageHeader={showAlertMessageHeader} 
+                      message={showAlertMessage} 
+                      showAlert={showAlert} 
+                      hideAlert={alertHide} /> : null}
     </div>
   );
 }

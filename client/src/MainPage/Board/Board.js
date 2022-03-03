@@ -115,19 +115,20 @@ class Board extends React.Component {
     let snapshotAlertMessage = 'You are viewing a snapshot. Go back to live board to edit.'
 
     return (
-      <div className="board">
+      <div>
         {this.state.showSnapshotAlert ? 
-          <AlertMessage condition={"Failure"}
+          <AlertMessage className="alert" condition={"Failure"}
                         message={snapshotAlertMessage}
                         showAlert={true} 
                         hideAlert={() => this.setState({showSnapshotAlert:false})}
           /> :
             (this.state.showLoggedOutAlert ? 
-              <AlertMessage condition={"Failure"} 
+              <AlertMessage className="alert" condition={"Failure"} 
                             message={loggedOutAlertMessage}
                             showAlert={true} 
                             hideAlert={() => this.setState({showLoggedOutAlert:false})} 
-              /> : rows)
+              /> : 
+              <div className="board">{rows}</div>)
         }
       </div>
     );

@@ -12,7 +12,7 @@ class ColorPicker extends React.Component {
 
   render() {
     return (
-      <SketchPicker className="color_picker"
+      <SketchPicker className="color-picker"
         color={this.state.background}
         onChangeComplete={(color) => {
           this.setState({
