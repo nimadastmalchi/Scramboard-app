@@ -6,6 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import './index.css';
+import Heatmap from './MainPage/Heatmap/Heatmap';
 import Scramboard from './MainPage/Scramboard/Scramboard';
 
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
             renders the first one that matches the current URL. */}
         <Routes>
           <Route path="/" element={<Scramboard></Scramboard>}/>
-          <Route path="/heatmap" element={<div>heatmap</div>}></Route>
+          <Route path="/heatmap" element={<Heatmap></Heatmap>}></Route>
         </Routes>
       </div>
     </Router>
