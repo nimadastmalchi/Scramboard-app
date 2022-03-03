@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 3001;
 
 const init = require('./init.js');
 const chat = require('./ChatConnection.js');
+const bot = require('./bot/bot.js');
 
 //firebase
 var admin = require("firebase-admin");
-
 
 var serviceAccount = require("./scramboard-firebase-adminsdk-netwc-80594fa323.json");
 admin.initializeApp({
@@ -20,7 +20,6 @@ admin.initializeApp({
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 const db = admin.database();
-//user id
 const pixelsRef = db.ref("pixels");
 const historyRef = db.ref("history");
 const chatRef = db.ref("chat");
@@ -32,6 +31,7 @@ const NUM_ROWS = 50;
 const NUM_COLS = 50;
 init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
 init.validateHistory(historyRef);
+//bot.run(db);   // remove comment to run bot
 
 // Utils for reading JSON:
 var bodyParser = require('body-parser')
