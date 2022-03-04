@@ -20,11 +20,12 @@ class Pixel:
         self.g = g
         self.b = b
     def __repr__(self):
-        return '\"#' + get_hex(self.r) + get_hex(self.g) + get_hex(self.b) + '\"'
+        return '#' + get_hex(self.r) + get_hex(self.g) + get_hex(self.b)
 
 
 def main():
     image = PIL.Image.open("image.png")
+    image = image.resize((50,50), Image.ANTIALIAS)
     image_sequence = image.getdata()
     image_array = np.array(image_sequence)
 
@@ -44,17 +45,26 @@ def main():
             pixel = pixels_1d_list[i*n + j]
             pixels_2d_list[i][j] = Pixel(pixel.r, pixel.g, pixel.b)
 
-    sys.stdout.write('[')
+    outfile = open('PixelArrayData.txt', 'w')
     for i in range(50):
-        sys.stdout.write('[')
         for j in range(50):
-            sys.stdout.write(str(pixels_2d_list[i][j]))
+            outfile.write(str(pixels_2d_list[i][j]))
             if j != 49:
-                sys.stdout.write(', ')
-        sys.stdout.write(']')
-        if i != 49:
-            sys.stdout.write(', ')
-    sys.stdout.write(']')
+                outfile.write(' ')
+        outfile.write('\n')
+    
+
+    #sys.stdout.write('[')
+    #for i in range(50):
+    #    sys.stdout.write('[')
+    #    for j in range(50):
+    #        sys.stdout.write(str(pixels_2d_list[i][j]))
+    #        if j != 49:
+    #            sys.stdout.write(', ')
+    #    sys.stdout.write(']')
+    #    if i != 49:
+    #        sys.stdout.write(', ')
+    #sys.stdout.write(']')
 
 if __name__ == '__main__':
     main()
