@@ -1,22 +1,26 @@
-.scram-board {
-  position: relative;
-  left: -40px;
-  margin-top: 20px;
-}
 
+.scram-board {
+  margin: auto;
+  margin-top: 50px;
+}
+.color_picker{
+  max-width: 100%;
+  min-width: 100%;
+}
 .scram {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.scram-div {
-  display: flex;
-  flex-direction: row;
+.left_sidebar {
+  padding-left:10px;
+  display:inline-block;
+  width: 20%;
 }
 
 .right_sidebar {
-  width: 30%;
+  width: 25%;
   height: 5vh;
 }
 
@@ -40,22 +44,19 @@
 
 .Avatar {
   display: inline-block;
-  /* float:left;  remove */
   margin: -30px 0px 0 0;
   font-size: 50px;
 } 
 
 .snapshot-list {
+  margin-top: 20px;
   font-weight: bold;
-  position: relative;
-  width: 240px;
-  height: 240px;
-  background-color: #c0c0c0;
+  width : 270px;
+  height: 300px;
   border: 1px solid rgba(59,58,58,0.4);
-  left: 10px;
-  top: 320px;
   transition: top ease 0.5s;
   box-shadow: 10px 5px 10px gray;
+  text-align: center;
 }
 
 .snapshot-element {
@@ -63,6 +64,7 @@
   display: block;
   margin-top: 10px;
   transition: transform 0.4s;
+  width: 200px;
 }
 
 .snapshot-element:hover {

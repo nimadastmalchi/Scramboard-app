@@ -7,6 +7,7 @@ import ChatWindow from '../ChatWindow/ChatWindow';
 import UserAvatar from 'react-user-avatar';
 import Footer from '../Footer/footer';
 import stringRGBHash from '../../Utilities/hash';
+import { Button  } from 'react-bootstrap';
 import 'scrollable-component';
 
 const Scramboard = (props) => {
@@ -72,26 +73,28 @@ const Scramboard = (props) => {
 
   const getSnapshotButtons = () => {
     const listElements = Array(numSnapshots).fill(null);
-    listElements[0] = <button key={0}
+    listElements[0] = <Button key={0}
+    variant={(0 === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
       className="snapshot-element"
       onClick={() => {
         setClickedButtomIndex(0);
         setClickNumber('');
       }}
-      style={{backgroundColor: (0 === clickedButtonIndex ? '#a9a9a9' : 'white')}}>
+      >
       Live Board
-    </button>
+    </Button>
     for (let i = 1; i <= numSnapshots - 1; ++i) {
       listElements[i] =
-        <button key={i}
+        <Button key={i}
+        variant={(i === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
           className="snapshot-element"
           onClick={() => {
             setClickedButtomIndex(i);
             setClickNumber(numSnapshots - i - 1);
           }}
-          style={{backgroundColor: (i === clickedButtonIndex ? '#a9a9a9' : 'white')}}>
+          >
           Snapshot {numSnapshots - i}
-        </button>
+        </Button>
     }
     return listElements;
   }
@@ -107,15 +110,16 @@ const Scramboard = (props) => {
         getusername={() => username}
       />
       <div className="scram">
-        <div className="scram-div">
 
+        <div className="left_sidebar">
           <ColorPicker className="color_picker" onColorChangeComplete={handleColorChangeComplete} />
 
           <scrollable-component class="snapshot-list">
             {getSnapshotButtons()}
           </scrollable-component>
+        </div>
 
-          <div className="scram-board">
+        <div className="scram-board">
             <Board currentColor={color}
               userLoggedIn={username != null}
               clickNumber={clickNumber}
@@ -123,8 +127,6 @@ const Scramboard = (props) => {
               userClickNum={userNumberofpixelEdited}
             />
           </div>
-
-        </div>
 
         <div className="right_sidebar">
           {username != null ?
@@ -150,6 +152,7 @@ const Scramboard = (props) => {
           <ChatWindow username={username} userNumberofComments={userNumberofComments}   setUserNumberofCommentsScramboard={setUserNumberofComments} />
 
         </div>
+
       </div>
       <Footer />
     </div>
