@@ -42,7 +42,11 @@ const CustomNavbar = (props) => {
 
     return (
       <Navbar.Brand>
-        <Button variant="primary" onClick={() => setLoginSignUpShow(true)}>
+        <Button style={{
+                  position: 'relative',
+                }}
+                variant="primary" 
+                onClick={() => setLoginSignUpShow(true)}>
           Login/SignUp
         </Button>
         <LoginSignUpModal
@@ -68,30 +72,37 @@ const CustomNavbar = (props) => {
           setUsernumPixelEdited={(numComments) => {
             props.setUsernumPixelEditedScramboard(numComments);
           }}
-          setUsernumPixelEdited={(numComments) => {
-            props.setUsernumPixelEditedScramboard(numComments);
-          }}
           setUserID={(id)=>{
               props.setUserIDScramboard(id);
           }}
 
           // props.setUsernumPixelEdited(result.numComments);
 
-
-
           show={loginSignUpShow}
           onHide={() => setLoginSignUpShow(false)}
         />
       </Navbar.Brand>
-
     );
   }
+
   return (
     <div>
-      <Navbar bg="dark" variant="dark" className='Custom-navbar'>
+      <Navbar style={{backgroundColor: '#383434'}} 
+              variant="dark" 
+              className='Custom-navbar'>
         <Container>
           <Navbar.Brand href="/">
-            Scramboard
+            Scramboard&trade;
+          </Navbar.Brand>
+          <Navbar.Brand style={{
+                          fontSize: 'small',
+                          position: 'relative',
+                          left: '22rem'
+                        }} 
+                        href="/heatmap">
+            <Button variant="primary">
+              Heatmap
+            </Button>
           </Navbar.Brand>
           <UserInfo />
         </Container>
