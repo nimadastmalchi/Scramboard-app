@@ -66,6 +66,28 @@ app.get('/numsnapshots', (req, res) => {
   });
 });
 
+// Get the heatmap 2d matrix for the grid
+// Based on the date range specified in
+// the req as epoch timestamp in milliseconds
+app.get('/heatmap', (req, res) => {
+  start_time = req.body.start
+  end_time = req.body.end
+  heatmap = Array(NUM_ROWS).fill().map(() => Array(NUM_COLS).fill(0));
+  db.collection('history/clicks/')
+    .where('date', '>=', start_time)
+    .where('date', '<=', end_time)
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((child) => {
+        index = child.index.split(",");
+        row = parseInt(index[0]);
+        col = parseInt(index[1]);
+        heatmap[row][col]++;
+      });
+    })
+  res.json(JSON.stringify(heatmap));
+});
+
 // Read from db and return a specific snapshot of the board
 // req must be of form:
 // req = {
@@ -131,12 +153,11 @@ app.post('/board', (req, res) => {
       console.log('Invalid history snapshot after initialization');
       process.exit(1);
     }
-    var myDate = new Date();
-    var pstDate = myDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"});
+    var epochTime = Date.now();
     db.ref('history/clicks/' + currentSize).set({
       index: req.body.row + ',' + req.body.col, 
       color: req.body.new_color, 
-      date: pstDate
+      date: epochTime
     });
     db.ref('history/currentSize').set(currentSize + 1);
   });
