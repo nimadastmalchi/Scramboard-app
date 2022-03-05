@@ -19,15 +19,16 @@ function run(db) {
   db.ref('pixels/array').set(board);
   db.ref('history/currentSize').set(2500);
   const clicks = Array(2500);
-  var myDate = new Date();
-  var pstDate = myDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"});
+  var timeInc = 864000;
+  var curEpochTime = Date.now() - timeInc*2500;
   for (let i = 0; i < 50; ++i) {
     for (let j = 0; j < 50; ++j) {
       clicks[i*50 + j] = {
         index: i + ',' + j,
         color: board[i][j],
-        date: pstDate,
+        time: curEpochTime,
       }
+      curEpochTime += timeInc;
     }
   }
   db.ref('history/clicks').set(clicks);

@@ -24,7 +24,8 @@ class Pixel:
 
 
 def main():
-    image = PIL.Image.open("image.png")
+    image_filename = input('Enter image file name in bot/images directory: ')
+    image = PIL.Image.open('images/' + image_filename)
     image = image.resize((50,50), Image.ANTIALIAS)
     image_sequence = image.getdata()
     image_array = np.array(image_sequence)

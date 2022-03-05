@@ -31,7 +31,7 @@ const NUM_ROWS = 50;
 const NUM_COLS = 50;
 init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
 init.validateHistory(historyRef);
-//bot.run(db);   // remove comment to run bot
+bot.run(db);   // remove comment to run bot
 
 // Utils for reading JSON:
 var bodyParser = require('body-parser')
@@ -74,8 +74,8 @@ app.get('/heatmap', (req, res) => {
   end_time = req.body.end
   heatmap = Array(NUM_ROWS).fill().map(() => Array(NUM_COLS).fill(0));
   db.collection('history/clicks/')
-    .where('date', '>=', start_time)
-    .where('date', '<=', end_time)
+    .where('time', '>=', start_time)
+    .where('time', '<=', end_time)
     .get()
     .then((snapshot) => {
       snapshot.forEach((child) => {
@@ -157,7 +157,7 @@ app.post('/board', (req, res) => {
     db.ref('history/clicks/' + currentSize).set({
       index: req.body.row + ',' + req.body.col, 
       color: req.body.new_color, 
-      date: epochTime
+      time: epochTime
     });
     db.ref('history/currentSize').set(currentSize + 1);
   });
