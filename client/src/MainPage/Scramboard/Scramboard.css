@@ -51,10 +51,9 @@
 .snapshot-list {
   margin-top: 20px;
   font-weight: bold;
-  width : 270px;
-  height: 300px;
+  width : 220px;
+  height: 240px;
   border: 1px solid rgba(59,58,58,0.4);
-  transition: top ease 0.5s;
   box-shadow: 10px 5px 10px gray;
   text-align: center;
 }
@@ -63,11 +62,10 @@
   margin: 0 auto;
   display: block;
   margin-top: 10px;
-  transition: transform 0.4s;
-  width: 200px;
 }
 
 .snapshot-element:hover {
+  transition: transform 0.4s;
   transform: scale(1.3);
 }
 

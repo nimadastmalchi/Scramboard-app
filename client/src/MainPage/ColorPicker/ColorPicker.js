@@ -14,7 +14,7 @@ class ColorPicker extends React.Component {
     return (
     
       <SketchPicker 
-        width='250px'
+        width='200px'
         color={this.state.background}
         onChangeComplete={(color) => {
           this.setState({

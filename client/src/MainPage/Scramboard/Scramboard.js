@@ -73,20 +73,21 @@ const Scramboard = (props) => {
 
   const getSnapshotButtons = () => {
     const listElements = Array(numSnapshots).fill(null);
-    listElements[0] = <Button key={0}
-    variant={(0 === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
-      className="snapshot-element"
-      onClick={() => {
-        setClickedButtomIndex(0);
-        setClickNumber('');
-      }}
+    listElements[0] = 
+      <Button key={0}
+        variant={(0 === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
+        className="snapshot-element"
+        onClick={() => {
+          setClickedButtomIndex(0);
+          setClickNumber('');
+        }}
       >
-      Live Board
-    </Button>
+        Live Board
+      </Button>
     for (let i = 1; i <= numSnapshots - 1; ++i) {
       listElements[i] =
         <Button key={i}
-        variant={(i === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
+          variant={(i === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
           className="snapshot-element"
           onClick={() => {
             setClickedButtomIndex(i);
