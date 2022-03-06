@@ -31,7 +31,7 @@ const NUM_ROWS = 50;
 const NUM_COLS = 50;
 init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
 init.validateHistory(historyRef);
-bot.run(db);   // remove comment to run bot
+// bot.run(db);   // remove comment to run bot
 
 // Utils for reading JSON:
 var bodyParser = require('body-parser')

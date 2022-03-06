@@ -112,24 +112,24 @@ const Scramboard = (props) => {
       />
       <div className="scram">
 
-        <div className="left_sidebar">
-          <ColorPicker className="color_picker" onColorChangeComplete={handleColorChangeComplete} />
+        <div className="left-sidebar">
+          <ColorPicker className="color-picker" onColorChangeComplete={handleColorChangeComplete} />
 
           <scrollable-component class="snapshot-list">
             {getSnapshotButtons()}
           </scrollable-component>
         </div>
 
-        <div className="scram-board">
+       
             <Board currentColor={color}
               userLoggedIn={username != null}
               clickNumber={clickNumber}
               userChangedPixel={setUserNumberofpixelEdited}
               userClickNum={userNumberofpixelEdited}
+              classNam="board-shadow"
             />
-          </div>
-
-        <div className="right_sidebar">
+     
+        <div className="right-sidebar">
           {username != null ?
             <div className="profile">
               <span className="Avatar">
