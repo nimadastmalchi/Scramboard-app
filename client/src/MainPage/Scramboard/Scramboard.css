@@ -1,8 +1,5 @@
 
-.scram-board {
-  margin: auto;
-  margin-top: 50px;
-}
+
 .color_picker{
   max-width: 100%;
   min-width: 100%;
@@ -16,11 +13,11 @@
 .left_sidebar {
   padding-left:10px;
   display:inline-block;
-  width: 20%;
+  width: 220px;
 }
 
 .right_sidebar {
-  width: 25%;
+  width: 350px;
   height: 5vh;
 }
 
@@ -51,7 +48,7 @@
 .snapshot-list {
   margin-top: 20px;
   font-weight: bold;
-  width : 270px;
+  width : 245px;
   height: 300px;
   border: 1px solid rgba(59,58,58,0.4);
   transition: top ease 0.5s;
@@ -68,7 +65,7 @@
 }
 
 .snapshot-element:hover {
-  transform: scale(1.3);
+  transform: scale(1.2);
 }
 
 .snapshot_selector {

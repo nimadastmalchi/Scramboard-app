@@ -119,15 +119,15 @@ const Scramboard = (props) => {
           </scrollable-component>
         </div>
 
-        <div className="scram-board">
+       
             <Board currentColor={color}
               userLoggedIn={username != null}
               clickNumber={clickNumber}
               userChangedPixel={setUserNumberofpixelEdited}
               userClickNum={userNumberofpixelEdited}
+              classNam="board-shadow"
             />
-          </div>
-
+     
         <div className="right_sidebar">
           {username != null ?
             <div className="profile">
