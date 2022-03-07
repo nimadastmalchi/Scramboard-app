@@ -56,9 +56,11 @@
 }
 
 .snapshot-element {
-  margin: 0 auto;
-  display: block;
-  margin-top: 10px;
+  display: none;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .snapshot-element:hover {
