@@ -4,7 +4,7 @@ import React from 'react';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // This seems like a promising heatmap for our purposes.
 // https://apexcharts.com/react-chart-demos/heatmap-charts/basic/
@@ -12,10 +12,14 @@ import { useState } from 'react';
 // NPM page: https://www.npmjs.com/package/react-apexcharts
 import Chart from "react-apexcharts";
 
+// Navbar implementation
+import CustomNavbar from '../CustomNavbar/CustomNavbar';
+import stringRGBHash from '../../Utilities/hash';
+
 class HeatmapChart extends React.Component {
     constructor(props) {
         super(props);
-        
+
         // Generates random data to display on the heatmap.
         // Eventually, we would want to replace this with some function
         // that would get the number of clicks per square.
@@ -139,23 +143,72 @@ function Heatmap(props) {
             endDate: new Date(),
             key: 'selection'
         }
-
-         
     ]);
 
+    // Custom "setDateRange" function that will be used to update
+    // heatmap information.
+    const customSetDateRange = (item) => {
+        setDateRange([item.selection]);
+        console.log(item.selection.startDate + " " + item.selection.endDate);
+    };
+
+
+    // Code to implement our CustomNavbar.
+    // Essentially took everything that was in Scramboard.js
+    const [username, setUsername] = useState(null); // null means no user logged in
+    const [avatarColor, setAvatarColor] = useState("rgb(0, 0, 0)");
+    const [userBirthdate, setUserBirthdate] = useState("NAN");
+    const [userNumberofpixelEdited, setUserNumberofpixelEdited] = useState(0);
+    const [userNumberofComments, setUserNumberofComments] = useState(0);
+    const [userID, setUserID] = useState(0);
+
+    const setProfileFromDB = () => {
+        fetch('http://localhost:3001/userprofileupdate', {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userNumberofpixelEdited: userNumberofpixelEdited,
+                userNumberofComments: userNumberofComments,
+                id: userID
+            })
+        })
+            .then((res) => res.json())
+            .catch((error) => console.log(error));
+    }
+
+    useEffect(() => {
+        setProfileFromDB();
+        if (username != null) {
+            setAvatarColor(stringRGBHash(username));
+        }
+    }, [userNumberofpixelEdited, userNumberofComments, username]);
+
     return (
-        <div style={{ width: "100%", display: "table" }}>
-            <div style={{ display: "table-row" }}>
-                <div id="datePicker" style={{ width: "250px", display: "table-cell" }}>
-                    <DateRange
-                        editableDateInputs={true}
-                        onChange={item => setDateRange([item.selection])}
-                        moveRangeOnFirstSelection={false}
-                        ranges={dateRange}
-                    />
-                </div>
-                <div id="heatmap" style={{ display: "table-cell" }}>
-                    <HeatmapChart startDate={dateRange.startDate} endDate={dateRange.endDate}/>
+        <div>
+            <div>
+                <CustomNavbar
+                    setusername={setUsername}
+                    setuserBirthdateScramboard={setUserBirthdate}
+                    setUserNumPixelEditedScramboard={setUserNumberofpixelEdited}
+                    setUsernumPixelEditedScramboard={setUserNumberofComments}
+                    setUserIDScramboard={setUserID}
+                    getusername={() => username}
+                />
+            </div>
+            <div style={{ width: "100%", display: "table" }}>
+                <div style={{ display: "table-row" }}>
+                    <div id="datePicker" style={{ width: "250px", display: "table-cell", verticalAlign: "top" }}>
+                        <DateRange
+                            editableDateInputs={true}
+                            onChange={item => customSetDateRange(item)}
+                            moveRangeOnFirstSelection={false}
+                            ranges={dateRange}
+                        />
+                    </div>
+                    <div id="heatmap" style={{ display: "table-cell" }}>
+                        <HeatmapChart startDate={dateRange.startDate} endDate={dateRange.endDate} />
+                    </div>
                 </div>
             </div>
         </div>
