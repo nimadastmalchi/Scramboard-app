@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import './Scramboard.css';
 import Board from '../Board/Board';
-import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import UserAvatar from 'react-user-avatar';
@@ -12,19 +11,12 @@ import 'scrollable-component';
 
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
-  const [username, setUsername] = useState(null); // null means no user logged in
   const [numSnapshots, setNumSnapshots] = useState(0);
   const [avatarColor, setAvatarColor] = useState("rgb(0, 0, 0)");
 
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
   const [clickedButtonIndex, setClickedButtomIndex] = useState(0); // initailly, the Live Board is clicked
-
-  //User profile information 
-  const [userBirthdate, setUserBirthdate] = useState("NAN"); 
-  const [userNumberofpixelEdited, setUserNumberofpixelEdited] = useState(0);
-  const [userNumberofComments, setUserNumberofComments] = useState(0);
-  const [userID, setUserID] = useState(0);
 
   // Fetch data from the node application, which accesses the DB for the
   // number of snapshots for the board.
@@ -43,9 +35,9 @@ const Scramboard = (props) => {
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        userNumberofpixelEdited: userNumberofpixelEdited,
-        userNumberofComments: userNumberofComments,
-        id: userID
+        userNumberofpixelEdited: props.userNumberofpixelEdited,
+        userNumberofComments: props.userNumberofComments,
+        id: props.userID
       })
     })
       .then((res) => res.json())
@@ -57,10 +49,10 @@ const Scramboard = (props) => {
   useEffect(() => {
     setNumSnapshotsFromDB();
     setProfileFromDB();
-    if (username != null) {
-      setAvatarColor(stringRGBHash(username));
+    if (props.username != null) {
+      setAvatarColor(stringRGBHash(props.username));
     }
-  }, [userNumberofpixelEdited, userNumberofComments, numSnapshots, username]);
+  }, [props.userNumberofpixelEdited, props.userNumberofComments, numSnapshots, props.username]);
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
@@ -102,14 +94,6 @@ const Scramboard = (props) => {
 
   return (
     <div>
-      <CustomNavbar
-        setusername={setUsername}
-        setuserBirthdateScramboard={setUserBirthdate}
-        setUserNumPixelEditedScramboard={setUserNumberofpixelEdited}
-        setUsernumPixelEditedScramboard={setUserNumberofComments}
-        setUserIDScramboard={setUserID}
-        getusername={() => username}
-      />
       <div className="scram">
 
         <div className="left-sidebar">
@@ -122,27 +106,27 @@ const Scramboard = (props) => {
 
        
             <Board currentColor={color}
-              userLoggedIn={username != null}
+              userLoggedIn={props.username != null}
               clickNumber={clickNumber}
-              userChangedPixel={setUserNumberofpixelEdited}
-              userClickNum={userNumberofpixelEdited}
+              userChangedPixel={props.setUserNumberofpixelEdited}
+              userClickNum={props.userNumberofpixelEdited}
               classNam="board-shadow"
             />
      
         <div className="right-sidebar">
-          {username != null ?
+          {props.username != null ?
             <div className="profile">
               <span className="Avatar">
                 <UserAvatar
                   size="100"
-                  name={username.toUpperCase().substring(0, 2)}
+                  name={props.username.toUpperCase().substring(0, 2)}
                   color={avatarColor}
                 />
               </span>
               <div className='profile-info'>
-                <h6>Birthdate: {userBirthdate} </h6>
-                <h6>Number of Comments: {userNumberofComments} </h6>
-                <h6>Number of Pixels Changed: {userNumberofpixelEdited} </h6>
+                <h6>Birthdate: {props.userBirthdate} </h6>
+                <h6>Number of Comments: {props.userNumberofComments} </h6>
+                <h6>Number of Pixels Changed: {props.userNumberofpixelEdited} </h6>
               </div>
             </div>
             :
@@ -150,7 +134,7 @@ const Scramboard = (props) => {
               <h6>Welcome!</h6>
             </div>
           }
-          <ChatWindow username={username} userNumberofComments={userNumberofComments}   setUserNumberofCommentsScramboard={setUserNumberofComments} />
+          <ChatWindow username={props.username} userNumberofComments={props.userNumberofComments}   setUserNumberofCommentsScramboard={props.setUserNumberofComments} />
 
         </div>
 

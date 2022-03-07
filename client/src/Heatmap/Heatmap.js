@@ -15,7 +15,7 @@ import Chart from "react-apexcharts";
 class HeatmapChart extends React.Component {
     constructor(props) {
         super(props);
-        
+
         // Generates random data to display on the heatmap.
         // Eventually, we would want to replace this with some function
         // that would get the number of clicks per square.
@@ -34,7 +34,6 @@ class HeatmapChart extends React.Component {
 
         // Generates series to populate heatmap.
         this.generateSeries = function (row, col) {
-
             // Each "series" is an array of JSON strings containing a name and data.
             // name - String denoting the name of series.
             // data - Array of elements representing that data.
@@ -131,7 +130,7 @@ class HeatmapChart extends React.Component {
 
 // Functional component that is used to render the overall heatmap page.
 function Heatmap(props) {
-
+    console.log(props.username);
     // Define a use state that will be used to get the dates.
     const [dateRange, setDateRange] = useState([
         {

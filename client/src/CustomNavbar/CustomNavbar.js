@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap'
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import LoginSignUpModal from '../Modal/LoginSignUpModal';
-import SignOutModal from '../Modal/SignOutModal';
-import AlertMessage from '../Alert/AlertMessage';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import LoginSignUpModal from '../MainPage/Modal/LoginSignUpModal';
+import SignOutModal from '../MainPage/Modal/SignOutModal';
+import AlertMessage from '../MainPage/Alert/AlertMessage';
 import './CustomNavbar.css'
 const CustomNavbar = (props) => {
 
