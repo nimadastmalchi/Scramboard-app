@@ -10,5 +10,16 @@ $ npm start
 3) Click on the web button and register the app. This will provide with firebase SDK keys for web.
 4) Add the key from this to the firebaseConfig.js file on the client side.
 5) Go to project Settings, then service accounts. Create a new Firebase admin sdk key add this to server file.
-6) Give permission for Authnetication, to allow user's to login with Email and password.
-7) Create a Real Time database and set the security rules to allow read and write.
+6) Also add to your server index file
+```Javscript
+var admin = require("firebase-admin");
+
+var serviceAccount = require("path/to/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "database URL"
+});
+```
+8) Give permission for Authnetication, to allow user's to login with Email and password.
+9) Create a Real Time database and set the security rules to allow read and write.
