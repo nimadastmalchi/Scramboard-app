@@ -40,6 +40,23 @@ class HeatmapChart extends React.Component {
             // data - Array of elements representing that data.
             const series = []
 
+            //TODO replace the above random data with the query below
+            // const start =  new Date("2022-03-06T00:00:00.000-08:00").getTime();
+            // const end =  new Date("2022-03-08T00:00:00.000-08:00").getTime();
+            // fetch('http://localhost:3001/heatmap', {
+            //     method: 'POST',
+            //     mode: 'cors',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({
+            //         start: start,
+            //         end: end
+            //     })
+            // }).then((data) => data.json())
+            //   .then((json) => {
+            //     console.log(json);
+            // })
+            // .catch((error) => console.log("Error: " + error));
+
             for (let i = 0; i < row; i++) {
                 // The name of the series will be the row number of the board.
                 const name = String(i);

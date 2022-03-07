@@ -69,23 +69,26 @@ app.get('/numsnapshots', (req, res) => {
 // Get the heatmap 2d matrix for the grid
 // Based on the date range specified in
 // the req as epoch timestamp in milliseconds
-app.get('/heatmap', (req, res) => {
-  start_time = req.body.start
-  end_time = req.body.end
-  heatmap = Array(NUM_ROWS).fill().map(() => Array(NUM_COLS).fill(0));
-  db.collection('history/clicks/')
-    .where('time', '>=', start_time)
-    .where('time', '<=', end_time)
-    .get()
+app.post('/heatmap', (req, res) => {
+  console.log(req.body.start);
+  console.log(req.body.end);
+
+  
+  db.ref('history/clicks/')
+    .once('value')
     .then((snapshot) => {
-      snapshot.forEach((child) => {
-        index = child.index.split(",");
-        row = parseInt(index[0]);
-        col = parseInt(index[1]);
-        heatmap[row][col]++;
+      let heatmap = Array(NUM_ROWS).fill().map(() => Array(NUM_COLS).fill(0));
+      snapshot.val().forEach((child) => {
+        if(child.time >= req.body.start && child.time <=  req.body.end)
+        {
+          index = child.index.split(",");
+          row = parseInt(index[0]);
+          col = parseInt(index[1]);
+          heatmap[row][col]++;
+        }
       });
-    })
-  res.json(JSON.stringify(heatmap));
+      res.json(JSON.stringify(heatmap));
+    });
 });
 
 // Read from db and return a specific snapshot of the board
