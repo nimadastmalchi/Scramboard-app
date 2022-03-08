@@ -51,7 +51,7 @@ const Scramboard = (props) => {
     if (props.username != null) {
       setAvatarColor(stringRGBHash(props.username));
     }
-  }, [props.userNumberofpixelEdited, props.userNumberofComments, numSnapshots, props.username]);
+  }, [props.userNumberofpixelEdited, props.userNumberofComments, props.username]);
 
   // Once a color change is complete, this function is called.
   // It sets the color state of Scramboard, which is then passed down
