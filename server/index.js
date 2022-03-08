@@ -31,7 +31,7 @@ const NUM_ROWS = 50;
 const NUM_COLS = 50;
 init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
 init.validateHistory(historyRef);
-// bot.run(db);   // remove comment to run bot
+ bot.run(db);   // remove comment to run bot
 
 // Utils for reading JSON:
 var bodyParser = require('body-parser')
@@ -70,10 +70,6 @@ app.get('/numsnapshots', (req, res) => {
 // Based on the date range specified in
 // the req as epoch timestamp in milliseconds
 app.post('/heatmap', (req, res) => {
-  console.log(req.body.start);
-  console.log(req.body.end);
-
-  
   db.ref('history/clicks/')
     .once('value')
     .then((snapshot) => {

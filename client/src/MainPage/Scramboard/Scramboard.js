@@ -6,7 +6,6 @@ import ChatWindow from '../ChatWindow/ChatWindow';
 import UserAvatar from 'react-user-avatar';
 import Footer from '../Footer/footer';
 import stringRGBHash from '../../Utilities/hash';
-import { Button  } from 'react-bootstrap';
 import 'scrollable-component';
 
 const Scramboard = (props) => {
@@ -66,28 +65,29 @@ const Scramboard = (props) => {
   const getSnapshotButtons = () => {
     const listElements = Array(numSnapshots).fill(null);
     listElements[0] = 
-      <Button key={0}
-        variant={(0 === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
+      <button key={0}
         className="snapshot-element"
         onClick={() => {
           setClickedButtomIndex(0);
           setClickNumber('');
         }}
+        style={{backgroundColor: (0 === clickedButtonIndex ? '#008080' : 'white')}}
       >
         Live Board
-      </Button>
+      </button>
     for (let i = 1; i <= numSnapshots - 1; ++i) {
+      console.log(clickedButtonIndex);
       listElements[i] =
-        <Button key={i}
-          variant={(i === clickedButtonIndex ? 'outline-primary' : 'outline-secondary')}
+        <button key={i}
           className="snapshot-element"
           onClick={() => {
             setClickedButtomIndex(i);
             setClickNumber(numSnapshots - i - 1);
           }}
+          style={{backgroundColor: (i === clickedButtonIndex ? '#008080' : 'white')}}
           >
           Snapshot {numSnapshots - i}
-        </Button>
+        </button>
     }
     return listElements;
   }
