@@ -31,7 +31,6 @@ const NUM_ROWS = 50;
 const NUM_COLS = 50;
 init.validatePixels(pixelsRef, NUM_ROWS, NUM_COLS);
 init.validateHistory(historyRef);
-// bot.run(db);   // remove comment to run bot
 
 // Utils for reading JSON:
 var bodyParser = require('body-parser')
@@ -45,6 +44,22 @@ const corsOptions = {
   optionSuccessStatus: 200,
 }
 app.use(cors(corsOptions)) // Use this after the variable declaration
+
+
+// ******** HANDLE STDIN BOT INPUT *********
+process.stdin.resume();
+process.stdin.on('data', (chunk) => {
+  var input = chunk.toString().replace('\n', '');
+  if (input === 'bot start') {
+    bot.run(db);
+  }
+  else {
+    console.log('process.stdin: unknown input')
+  }
+}).on('end', () => { // called when stdin closes via ^D
+  console.log('process.stdin: closed')
+})
+
 
 // ********** PIXELS ************
 // Read from board and send to react
