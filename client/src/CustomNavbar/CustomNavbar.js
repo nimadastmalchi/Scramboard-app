@@ -94,13 +94,12 @@ const CustomNavbar = (props) => {
           <Navbar.Brand href="/">
             Scramboard&trade;
           </Navbar.Brand>
-          <Navbar.Brand style={{
-                          fontSize: 'small',
-                          position: 'relative',
-                          left: '22rem'
-                        }} 
-                        href="/heatmap">
-            <Button variant="primary">
+          <Navbar.Brand href="/heatmap">
+            <Button 
+              style={{
+                position: 'relative',
+              }}
+              variant="primary">
               Heatmap
             </Button>
           </Navbar.Brand>

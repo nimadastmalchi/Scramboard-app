@@ -116,8 +116,6 @@ class Board extends React.Component {
     return (
       <div className="scram-board">
       
-
-       
         {this.state.showSnapshotAlert ? 
           <AlertMessage className="alert" condition={"Failure"}
                         message={snapshotAlertMessage}

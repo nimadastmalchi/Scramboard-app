@@ -6,27 +6,15 @@ import ChatWindow from '../ChatWindow/ChatWindow';
 import UserAvatar from 'react-user-avatar';
 import Footer from '../Footer/footer';
 import stringRGBHash from '../../Utilities/hash';
+import SnapshotsList from '../Snapshots/SnapshotsList'
 import 'scrollable-component';
 
 const Scramboard = (props) => {
   const [color, setColor] = useState("#ffffff");
-  const [numSnapshots, setNumSnapshots] = useState(0);
   const [avatarColor, setAvatarColor] = useState("rgb(0, 0, 0)");
 
   // the clickNumber in the form
   const [clickNumber, setClickNumber] = useState('');
-  const [clickedButtonIndex, setClickedButtomIndex] = useState(0); // initailly, the Live Board is clicked
-
-  // Fetch data from the node application, which accesses the DB for the
-  // number of snapshots for the board.
-  const setNumSnapshotsFromDB = () => {
-    fetch("http://localhost:3001/numsnapshots/")
-      .then((res) => res.json())
-      .then((data) => {
-        setNumSnapshots(data.numSnapshots);
-      })
-      .catch((error) => console.log(error));
-  }
 
   const setProfileFromDB = () => {
     fetch('http://localhost:3001/userprofileupdate', {
@@ -43,10 +31,7 @@ const Scramboard = (props) => {
       .catch((error) => console.log(error));
   }
 
-  //setInterval(() => setNumSnapshotsFromDB(), 1000);
-
   useEffect(() => {
-    setNumSnapshotsFromDB();
     setProfileFromDB();
     if (props.username != null) {
       setAvatarColor(stringRGBHash(props.username));
@@ -62,36 +47,6 @@ const Scramboard = (props) => {
     setColor(color.hex);
   }
 
-  const getSnapshotButtons = () => {
-    const listElements = Array(numSnapshots).fill(null);
-    listElements[0] = 
-      <button key={0}
-        className="snapshot-element"
-        onClick={() => {
-          setClickedButtomIndex(0);
-          setClickNumber('');
-        }}
-        style={{backgroundColor: (0 === clickedButtonIndex ? '#008080' : 'white')}}
-      >
-        Live Board
-      </button>
-    for (let i = 1; i <= numSnapshots - 1; ++i) {
-      console.log(clickedButtonIndex);
-      listElements[i] =
-        <button key={i}
-          className="snapshot-element"
-          onClick={() => {
-            setClickedButtomIndex(i);
-            setClickNumber(numSnapshots - i - 1);
-          }}
-          style={{backgroundColor: (i === clickedButtonIndex ? '#008080' : 'white')}}
-          >
-          Snapshot {numSnapshots - i}
-        </button>
-    }
-    return listElements;
-  }
-
   return (
     <div>
       <div className="scram">
@@ -99,9 +54,9 @@ const Scramboard = (props) => {
         <div className="left-sidebar">
           <ColorPicker className="color-picker" onColorChangeComplete={handleColorChangeComplete} />
 
-          <scrollable-component class="snapshot-list">
-            {getSnapshotButtons()}
-          </scrollable-component>
+          <SnapshotsList
+            setClickNumber={setClickNumber}
+          />
         </div>
 
        
