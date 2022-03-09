@@ -2,7 +2,7 @@
 
 Scramboard is a collective pixel-board that can be edited in real-time by users logged into the site. Users can edit individual pixels on a whim, but under coordinated efforts can create creative pixel art images. However, they must be cautious as other users rise to make their own mark.
 
-
+![image](https://user-images.githubusercontent.com/25020111/157370612-87cf44b7-71be-425c-9b73-9de45f18afd9.png)
 
 # Installation Requirements
 
@@ -78,7 +78,6 @@ Scramboard is a collective pixel-board that can be edited in real-time by users 
    });
    ```
 
-```
 9) Give permission for Authnetication, to allow user's to login with Email and password.
+
 10) Create a Real Time database and set the security rules to allow read and write.
-```
