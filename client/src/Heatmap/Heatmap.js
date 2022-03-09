@@ -116,9 +116,27 @@ function HeatmapChart(props) {
                     ranges: [{
                         from: 0,
                         to: 0,
-                        color: '#ff0000',
-                        name: 'CELLS W/ NO CLICKS'
-                    }]
+                        color: '#78c1ff',
+                        name: '0 Clicks'
+                    },
+                    {
+                        from: 1,
+                        to: 5,
+                        color: '#468fea',
+                        name: '1 - 5 Clicks'
+                    },
+                    {
+                        from: 6,
+                        to: 10,
+                        color: '#003f9a',
+                        name: '6 - 10 Clicks'
+                    },
+                    {
+                        from: 10,
+                        to: Number.MAX_SAFE_INTEGER,
+                        color: '#000000',
+                        name: '10+ Clicks'
+                    },]
                 }
             }
         }
