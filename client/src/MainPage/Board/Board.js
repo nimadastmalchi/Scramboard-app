@@ -3,6 +3,7 @@ import Pixel from '../Pixel/Pixel';
 import React from 'react';
 import AlertMessage from '../Alert/AlertMessage';
 import './Board.css';
+import { getDatabase, onValue, ref } from 'firebase/database';
 
 class Board extends React.Component {
   constructor(props) {
@@ -19,7 +20,27 @@ class Board extends React.Component {
     this.renderedClickNum = ''; // the click number that is rendered
 
     this.setBoardFromDB();
-    setInterval(() => this.setBoardFromDB(), 5000);
+    setTimeout(() => this.boardFromDBListener(), 1000);
+  }
+
+  boardFromDBListener() {
+    console.log('board listener');
+    const db = getDatabase();
+    const pixelsRef = ref(db, 'pixels');
+    onValue(pixelsRef, (snapshot) => {
+      if (this.props.clickNumber !== '') {
+        // Currently viewing a snapshot
+        // do NOT update
+        return;
+      }
+      const data = snapshot.val();
+      console.log(data);
+      this.setState({
+        pixels: data.array,
+        numRows: data.num_rows,
+        numCols: data.num_cols
+      });
+    });
   }
 
   setBoardFromDB() {
