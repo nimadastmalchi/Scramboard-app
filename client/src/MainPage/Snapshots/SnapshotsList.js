@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import './Snapshots.css';
 import 'scrollable-component';
+import { getDatabase, onValue, ref } from 'firebase/database';
 
 const SnapshotsList = (props) => {
   const [numSnapshots, setNumSnapshots] = useState(0);
@@ -8,18 +9,19 @@ const SnapshotsList = (props) => {
 
   // Fetch data from the node application, which accesses the DB for the
   // number of snapshots for the board.
-  const setNumSnapshotsFromDB = () => {
-    fetch("http://localhost:3001/numsnapshots/")
-      .then((res) => res.json())
-      .then((data) => {
-        setNumSnapshots(data.numSnapshots);
-      })
-      .catch((error) => console.log(error));
+
+  const numSnapshotsFromDBListener = () => {
+    const db = getDatabase();
+    const numSnapshotsRef = ref(db, 'history/currentSize');
+    onValue(numSnapshotsRef, (snapshot) => {
+      setNumSnapshots(snapshot.val());
+    });
   }
 
+  // Call once:
   useEffect(() => {
-    setNumSnapshotsFromDB();
-  });
+    numSnapshotsFromDBListener();
+  }, []);
 
   const getSnapshotButtons = () => {
     const listElements = Array(numSnapshots).fill(null);
