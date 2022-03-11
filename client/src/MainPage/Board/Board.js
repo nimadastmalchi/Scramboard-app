@@ -24,7 +24,6 @@ class Board extends React.Component {
   }
 
   boardFromDBListener() {
-    console.log('board listener');
     const db = getDatabase();
     const pixelsRef = ref(db, 'pixels');
     onValue(pixelsRef, (snapshot) => {
@@ -34,7 +33,6 @@ class Board extends React.Component {
         return;
       }
       const data = snapshot.val();
-      console.log(data);
       this.setState({
         pixels: data.array,
         numRows: data.num_rows,
@@ -94,7 +92,6 @@ class Board extends React.Component {
 
     //adding pixel to user's count
     this.props.userChangedPixel(this.props.userClickNum+1);
-    //console.log(this.props.userClickNum);
     // send data to node
     fetch('http://localhost:3001/board', {
       method: 'POST',

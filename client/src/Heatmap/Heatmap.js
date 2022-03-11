@@ -184,7 +184,7 @@ function Heatmap(props) {
         setDateRange([item.selection]);
 
         const start = item.selection.startDate.getTime();
-        const end = item.selection.endDate.getTime();
+        const end = item.selection.endDate.getTime() + 24*3600*1000;
         fetch('http://localhost:3001/heatmap', {
             method: 'POST',
             mode: 'cors',
