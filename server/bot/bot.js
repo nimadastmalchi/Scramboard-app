@@ -1,5 +1,7 @@
 const fs = require('fs')
 
+const thresh = '0xeeeeee'
+
 function run(db) {
   let data = null;
   try {
@@ -22,7 +24,7 @@ function run(db) {
   let numClicks = 0;
   for (let i = 0; i < 50; ++i) {
     for (let j = 0; j < 50; ++j) {
-      if (Number('0x' + board[i][j].slice(1)) > Number('0xcccccc')) {
+      if (Number('0x' + board[i][j].slice(1)) > Number(thresh)) {
         continue;
       }
       ++numClicks;
@@ -31,7 +33,7 @@ function run(db) {
   var curEpochTime = Date.now() - timeInc*numClicks;
   for (let i = 0; i < 50; ++i) {
     for (let j = 0; j < 50; ++j) {
-      if (Number('0x' + board[i][j].slice(1)) > Number('0xcccccc')) {
+      if (Number('0x' + board[i][j].slice(1)) > Number(thresh)) {
         continue;
       }
       pixels[i][j] = board[i][j];
