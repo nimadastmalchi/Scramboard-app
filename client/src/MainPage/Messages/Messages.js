@@ -1,10 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import Message from './Message';
 import './Messages.css';
+import { getDatabase, onValue, ref } from 'firebase/database';
 
 function Messages({ socket }) {
   const [messages, setMessages] = useState({});
 
+  useEffect(() => {
+    const db = getDatabase();
+    const chatRef = ref(db, 'chat');
+    onValue(chatRef, (snapshot) => {
+      const messageListener = (message) => {
+        setMessages((prevMessages) => {
+          const newMessages = { ...prevMessages };
+          newMessages[message.id] = message;
+          return newMessages;
+        });
+
+
+        // Whenever a new message is added, scroll to the
+        // bottom of the chat message history.
+        let chatMessageHistory = document.getElementById("chatMessageHistory");
+        chatMessageHistory.scrollTo(0, chatMessageHistory.scrollHeight);
+      };
+
+      socket.on('message', messageListener);
+      socket.emit('getMessages');
+
+      return () => {
+        socket.off('message', messageListener);
+      };
+    });
+  }, []);
+
+  /*
   useEffect(() => {
     const messageListener = (message) => {
       setMessages((prevMessages) => {
@@ -27,6 +56,7 @@ function Messages({ socket }) {
       socket.off('message', messageListener);
     };
   }, [socket]);
+  */
 
   return (
     <ul id="chatMessageHistory" className="chat_messages">
